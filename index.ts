@@ -1,7 +1,7 @@
 import { Bot } from "grammy";
 import moment from "moment-timezone";
 moment.tz.setDefault("Europe/Kyiv");
-const bot = new Bot("5749746961:AAE1bsHbHm4KUywbOA0bhPls4PvEoMqf6js")
+const bot = new Bot(<string>process.env.BOT_TOKEN);
 import { hydrateReply, parseMode } from "@grammyjs/parse-mode";
 bot.api.config.use(parseMode("HTML"));
 const links = {
