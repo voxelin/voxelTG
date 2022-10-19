@@ -5,54 +5,21 @@ const bot = new Bot("5749746961:AAE1bsHbHm4KUywbOA0bhPls4PvEoMqf6js")
 import { hydrateReply, parseMode } from "@grammyjs/parse-mode";
 bot.api.config.use(parseMode("MarkdownV2"));
 const links = {
-    "Deutsch": "https://us05web.zoom.us/j/3942975249?pwd=ZUpwTGxlQWNjYWlNU1Zua1o1RGoxZz09",
+    "German": "https://us05web.zoom.us/j/3942975249?pwd=ZUpwTGxlQWNjYWlNU1Zua1o1RGoxZz09",
     "Physics": "https://us05web.zoom.us/j/8947641185?pwd=WS9aOE9OQnRFalU2SjAzVUxPMGIrUT09",
-    "EnglishA": "https://us04web.zoom.us/j/9643428378?pwd=ZVBQbUxhUXRBMnZoOWRyWHFkalBKUT09",
-    "EnglishB": "https://ieljit.lol/Unknown",
+    "English": "https://us04web.zoom.us/j/9643428378?pwd=ZVBQbUxhUXRBMnZoOWRyWHFkalBKUT09",
+    "Informatics": "https://us05web.zoom.us/j/2186144205?pwd=QUtFazZ6QWN5REdYMVdFUjZYMHNSQT09",
     "Chemistry": "https://us04web.zoom.us/j/3666591773 (Code: 242295)",
     "Algebra": "https://us04web.zoom.us/j/2916115479?pwd=MlZ2bnpWZy9IUkpjVUpPSkhSN0g0QT09",
-    "ULanguage": "https://us05web.zoom.us/j/7353173624?pwd=aDNmdVVxbU5mOG8rVUc5clRhTjBEUT09",
+    "Geometry": "https://us04web.zoom.us/j/2916115479?pwd=MlZ2bnpWZy9IUkpjVUpPSkhSN0g0QT09",
+    "Ukrainian": "https://us05web.zoom.us/j/7353173624?pwd=aDNmdVVxbU5mOG8rVUc5clRhTjBEUT09",
+    "UkrainianLit": "https://us05web.zoom.us/j/7353173624?pwd=aDNmdVVxbU5mOG8rVUc5clRhTjBEUT09",
     "Biology": "https://us05web.zoom.us/j/5767269339?pwd=MVlXMFJ3VGJnenZDb2M5SWRBNlJBdz09",
     "Geography": "https://us05web.zoom.us/j/5603703875?pwd=RnJnaThsVXpsQXZ0UG1sUnRNOGgxQT09",
     "History": "https://us05web.zoom.us/j/2729538733?pwd=L29wdDEybjNSYlVqTzBxMlRtdW93dz09",
     "FLit": "https://us04web.zoom.us/j/72684571864?pwd=bC9yeTQQ3uWIYwGhnNb90BwuTZbvuA.1",
-    "Art": "https://us04web.zoom.us/j/9276332346?pwd=eDN5WG9TNjFMSXNkeTZxMEpnNFVtdz09"
-}
-const schedule: any = {
-    "Monday": {
-        "8:15": links.Deutsch,
-        "9:15": links.Physics,
-        "10:15": links.EnglishA + " \n" + links.EnglishB,
-        "11:15": links.Chemistry,
-        "12:10": links.Algebra,
-    },
-    "Tuesday": {
-        "8:15": links.FLit,
-        "9:15": links.Art,
-        "10:15": links.Algebra,
-        "11:15": links.ULanguage,
-        "12:10": links.History,
-        "13:10": links.ULanguage,
-        "13:55": links.Geography,
-    },
-    "Wednesday": {
-        "8:15": links.History,
-        "9:15": links.Physics,
-        "10:15": links.EnglishA + " \n" + links.EnglishB,
-        "11:15": links.Chemistry,
-        "12:10": links.EnglishA + " \n" + links.EnglishB,
-        "13:10": links.Algebra,
-        "13:55": links.Biology,
-    },
-    "Thursday": {
-        "8:15": links.Algebra,
-        "9:15": links.FLit,
-        "10:15": links.Physics,
-        "11:15": links.EnglishB,
-        "12:10": links.Deutsch,
-        "13:10": links.EnglishA + " \n" + links.EnglishB,
-        "13:55": links.Geography,
-    }
+    "Art": "https://us04web.zoom.us/j/9276332346?pwd=eDN5WG9TNjFMSXNkeTZxMEpnNFVtdz09",
+    "Law": "https://us05web.zoom.us/j/8796615923?pwd=K3N6YlBuTTNjTjZ6VzNXVENoY2VRUT09"
 }
 
 const messages: any = {
@@ -96,6 +63,51 @@ const messages: any = {
     "Saturday": "У нас сьогодні вихідний!",
     "Sunday": "У нас сьогодні вихідний!",
 }
+// Copy schedule from messages
+const link_schedule: any = {
+    "Monday": {
+        "8:15": links["German"],
+        "9:15": links["Physics"],
+        "10:15": links["English"],
+        "11:15": links["Chemistry"],
+        "12:10": links["Algebra"],
+        "13:10": links["Ukrainian"],
+    },
+    "Tuesday": {
+        "8:15": links["FLit"],
+        "9:15": links["Art"],
+        "10:15": links["Geometry"],
+        "11:15": links["UkrainianLit"],
+        "12:10": links["History"],
+        "13:10": links["Ukrainian"],
+        "13:55": links["Geography"],
+    },
+    "Wednesday": {
+        "8:15": links["History"],
+        "9:15": links["Physics"],
+        "10:15": links["English"],
+        "11:15": links["Chemistry"],
+        "12:10": links["English"],
+        "13:10": links["Informatics"],
+        "13:55": links["Biology"],
+    },
+    "Thursday": {
+        "8:15": links["Algebra"],
+        "9:15": links["FLit"],
+        "10:15": links["Physics"],
+        "11:15": links["Law"],
+        "12:10": links["German"],
+        "13:10": links["English"],
+        "13:55": links["Geography"],
+    },
+    "Friday": {
+        "9:15": links["UkrainianLit"],
+        "10:15": links["English"],
+        "11:15": links["Biology"],
+        "12:10": links["Geometry"],
+        "13:10": links["Informatics"],
+    },
+}
 bot.command("start", (ctx) => {
     ctx.reply("Hello, I am TBH, made by @ieljit!");
 });
@@ -108,10 +120,10 @@ bot.command("sch", (ctx) => {
 const sendlink = () => {
     const day = moment().format("dddd");
     const time = moment().format("HH:mm");
-    const link = schedule[day][time];
+    const link = link_schedule[day][time];
     console.log(day, time, link);
     if (link) {
-        bot.api.sendMessage("-820981600", link);
+        bot.api.sendMessage("-820981600", link, {parse_mode: "HTML"});
     }
 }
 setInterval(sendlink, 1000 * 60);
