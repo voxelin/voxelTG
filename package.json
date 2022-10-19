@@ -1,0 +1,26 @@
+{
+  "name": "grammy-tobehonest",
+  "version": "0.0.1",
+  "description": "Telegram bot. Simple.",
+  "main": "./dist/index.js",
+  "scripts": {
+    "test": "echo \"\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ieljit/tbh.git"
+  },
+  "keywords": [
+    "tg",
+    "telegram",
+    "grammy",
+    "bot",
+    "reminder"
+  ],
+  "author": "The Jenny",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ieljit/tbh/issues"
+  },
+  "homepage": "https://github.com/ieljit/tbh#readme"
+}
