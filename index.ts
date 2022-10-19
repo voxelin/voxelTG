@@ -3,7 +3,7 @@ import moment from "moment-timezone";
 moment.tz.setDefault("Europe/Kyiv");
 const bot = new Bot("5749746961:AAE1bsHbHm4KUywbOA0bhPls4PvEoMqf6js")
 import { hydrateReply, parseMode } from "@grammyjs/parse-mode";
-bot.api.config.use(parseMode("MarkdownV2"));
+bot.api.config.use(parseMode("HTML"));
 const links = {
     "German": "https://us05web.zoom.us/j/3942975249?pwd=ZUpwTGxlQWNjYWlNU1Zua1o1RGoxZz09",
     "Physics": "https://us05web.zoom.us/j/8947641185?pwd=WS9aOE9OQnRFalU2SjAzVUxPMGIrUT09",
@@ -108,13 +108,21 @@ const link_schedule: any = {
         "13:10": links["Informatics"],
     },
 }
+let ongoing = "";
+
 bot.command("start", (ctx) => {
     ctx.reply("Hello, I am TBH, made by @ieljit!");
 });
 bot.command("sch", (ctx) => {
-    ctx.reply(messages[moment().format("dddd")]);
+    ctx.reply(messages[moment().format("dddd")], {parse_mode: "MarkdownV2"});
 });
-
+bot.command("link", (ctx) => {
+    if (ongoing == "") {
+        ctx.reply("Наразі немає посилань на заняття!");
+    } else {
+        ctx.reply(`Посилання на заняття: ${ongoing}`);
+    }
+});
 
 // Send link to the group chat automatically by time
 const sendlink = () => {
@@ -123,10 +131,10 @@ const sendlink = () => {
     const link = link_schedule[day][time];
     console.log(day, time, link);
     if (link) {
-        bot.api.sendMessage("-820981600", link, {parse_mode: "HTML"});
+        ongoing = link;
+        bot.api.sendMessage("-820981600", link);
     }
 }
 setInterval(sendlink, 1000 * 60);
-
 
 bot.start();
