@@ -1,8 +1,10 @@
 export type urls = {
     "German": string,
     "Physics": string,
-    "English": string,
-    "Informatics": string,
+    "EnglishA": string,
+    "EnglishB": string,
+    "InformaticsA": string,
+    "InformaticsB": string,
     "Chemistry": string,
     "Algebra": string,
     "Geometry": string,
