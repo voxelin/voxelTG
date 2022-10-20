@@ -129,8 +129,8 @@ const sendlink = () => {
     const day = moment().format("dddd");
     const time = moment().format("HH:mm");
     const link = link_schedule[day][time];
-    console.log(day, time, link);
     if (link) {
+        console.log(day, time, link);
         ongoing = link;
         bot.api.sendMessage("-1001194355855", link);
     }
