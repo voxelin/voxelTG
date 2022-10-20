@@ -132,7 +132,7 @@ const sendlink = () => {
     console.log(day, time, link);
     if (link) {
         ongoing = link;
-        bot.api.sendMessage("-820981600", link);
+        bot.api.sendMessage("-1001194355855", link);
     }
 }
 setInterval(sendlink, 1000 * 60);
