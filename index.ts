@@ -9,16 +9,16 @@ import { parseMode } from "@grammyjs/parse-mode";
 import { readFileSync } from "fs";
 const messages: mgs = JSON.parse(readFileSync("./data/messages.json", "utf-8"));
 const links: urls = JSON.parse(readFileSync("./data/links.json", "utf-8"));
-const english_group_message = `1. ${links["EnglishA"]}
-2. ${links["EnglishB"]}]}`
+const english_group_message = `1. <a href="${links["EnglishA"]}">Чепурна Вікторія Вікторівна</a> \n 2. <a href="${links["EnglishB"]}>Ольга Миколаївна Дунько</a>`
 const informatics_group_message = `${links["InformaticsA"]} \n ${links["InformaticsB"]}`;
 const schedule: { [key: string]: { start: string, end: string, link: string, name: string, sent?: boolean }[] } = {
-    "Monday": [{ start: "08:15", end: "09:00", link: links["German"], name: "💬 Німецька" },
-    { start: "09:15", end: "10:00", link: links["Physics"], name: "🔬 Фізика" },
-    { start: "10:15", end: "11:00", link: english_group_message, name: "📚 Англійська" },
-    { start: "11:15", end: "12:00", link: links["Chemistry"], name: "🧪 Хімія" },
-    { start: "12:10", end: "12:55", link: links["Algebra"], name: "📐 Алгебра" },
-    { start: "13:05", end: "13:50", link: links["Ukrainian"], name: "📚 Українська мова" },
+    "Monday": [
+        { start: "08:15", end: "09:00", link: links["German"], name: "💬 Німецька" },
+        { start: "09:15", end: "10:00", link: links["Physics"], name: "🔬 Фізика" },
+        { start: "10:15", end: "11:00", link: english_group_message, name: "📚 Англійська" },
+        { start: "11:15", end: "12:00", link: links["Chemistry"], name: "🧪 Хімія" },
+        { start: "12:10", end: "12:55", link: links["Algebra"], name: "📐 Алгебра" },
+        { start: "13:05", end: "13:50", link: links["Ukrainian"], name: "📚 Українська мова" },
     ],
     "Tuesday": [
         { start: "08:15", end: "09:00", link: links["FLit"], name: "📚 Зарубіжна література" },
