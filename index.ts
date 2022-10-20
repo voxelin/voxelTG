@@ -111,7 +111,7 @@ const link_schedule: any = {
 let ongoing = "";
 
 bot.command("start", (ctx) => {
-    ctx.reply("Hello, I am TBH, made by @ieljit!");
+    ctx.reply("Шо ти, чєпуха?");
 });
 bot.command("sch", (ctx) => {
     ctx.reply(messages[moment().format("dddd")], {parse_mode: "MarkdownV2"});
