@@ -5,18 +5,20 @@ const bot = new Bot(<string>process.env.BOT_TOKEN);
 import { hydrateReply, parseMode } from "@grammyjs/parse-mode";
 import { readFileSync } from "fs";
 bot.api.config.use(parseMode("HTML"));
-const messages: {[key: string]: string} = JSON.parse(readFileSync("./phrases/messages.json", "utf-8"));
-const links: {[key: string]: string} = JSON.parse(readFileSync("./phrases/links.json", "utf-8"));
+const messages: {[key: string]: string} = JSON.parse(readFileSync("./data/messages.json", "utf-8"));
+const links: {[key: string]: string} = JSON.parse(readFileSync("./data/links.json", "utf-8"));
 // Copy schedule from messages
+// Each lesson is 45 minutes long
+// Take lesson link from links.json
 const link_schedule: any = {
-    "Monday": {
-        "08:15": links["German"],
-        "09:15": links["Physics"],
-        "10:15": links["English"],
-        "11:15": links["Chemistry"],
-        "12:10": links["Algebra"],
-        "13:10": links["Ukrainian"],
-    },
+    "Monday": [{ start: "8:15", end: "9:00", link: links["German"], name: "💬 Німецька" },
+        { start: "9:15", end: "10:00", link: links["Math"], name: "📚 Математика" },
+        { start: "10:15", end: "11:00", link: links["English"], name: "📚 Англійська" },
+        { start: "11:15", end: "12:00", link: links["Ukrainian"], name: "📚 Українська" },
+        { start: "12:10", end: "12:55", link: links["Ukrainian"], name: "📚 Українська" },
+        { start: "13:05", end: "13:50", link: links["Ukrainian"], name: "📚 Українська" },
+        { start: "13:55", end: "14:40", link: links["Ukrainian"], name: "📚 Українська" },
+    ],
     "Tuesday": {
         "08:15": links["FLit"],
         "09:15": links["Art"],
