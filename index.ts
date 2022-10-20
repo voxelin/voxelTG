@@ -1,9 +1,11 @@
 import { urls, mgs } from './index.d';
-import { Bot } from "grammy";
+import { Bot, Context } from "grammy";
 import moment from "moment-timezone";
+import { hydrate, HydrateFlavor } from "@grammyjs/hydrate";
+type botcontext = HydrateFlavor<Context>;
 moment.tz.setDefault("Europe/Kyiv");
-const bot = new Bot(<string>process.env.BOT_TOKEN);
-import { hydrateReply, parseMode } from "@grammyjs/parse-mode";
+const bot = new Bot<botcontext>(<string>process.env.BOT_TOKEN);
+import { parseMode } from "@grammyjs/parse-mode";
 import { readFileSync } from "fs";
 const messages: mgs = JSON.parse(readFileSync("./data/messages.json", "utf-8"));
 const links: urls = JSON.parse(readFileSync("./data/links.json", "utf-8"));
@@ -51,8 +53,9 @@ const schedule: { [key: string]: { start: string, end: string, link: string, nam
     ],
 }
 bot.api.config.use(parseMode("HTML"));
+bot.use(hydrate());
 bot.command("start", (ctx) => {
-    ctx.reply("Шо ти, чєпуха?");
+    ctx.reply("Щоб дізнатись розклад, надішліть /sch");
 });
 bot.command("sch", (ctx) => {
     ctx.reply(messages[moment().format("dddd")], { parse_mode: "MarkdownV2" });
@@ -68,7 +71,6 @@ const sendlink = () => {
         if (time >= schedule[day][i].start && time <= schedule[day][i].end) {
             link = schedule[day][i].link;
             name = schedule[day][i].name;
-            // Make sent false by default if undefined
             sent = schedule[day][i].sent || false;
             schedule[day][i].sent = true
             break;
@@ -95,7 +97,7 @@ bot.command("link", async (ctx) => {
     if (link != "") {
         ctx.reply(`<b>${name}</b> \n${link}`);
     } else {
-        ctx.reply("Немає уроків");
+        ctx.reply("Зараз перерва або ж уроки закінчились. 🤔");
     }
 });
 
