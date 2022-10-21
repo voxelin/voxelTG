@@ -42,13 +42,13 @@ bot.command("schedule", async (ctx) => {
     schedule[day].forEach((item) => {
         switch (item.name) {
             case "📚 Англійська":
-                message += `     ⚬ _${item.start}_-_${item.end}_ — ${item.name} ([Чепурна](${item.link[0]}) | [Дунько](${item.link[1]}))\n`;
+                message += `⚬ _${item.start}_-_${item.end}_ — ${item.name} ([Чепурна](${item.link[0]}) | [Дунько](${item.link[1]}))\n`;
                 break;
             case "💻 Інформатика":
-                message += `     ⚬ _${item.start}_-_${item.end}_ — ${item.name} ([Беднар](${item.link[0]}) | [Шеремет](${item.link[1]}))\n`;
+                message += `⚬ _${item.start}_-_${item.end}_ — ${item.name} ([Беднар](${item.link[0]}) | [Шеремет](${item.link[1]}))\n`;
                 break;
             default:
-                message += `     ⚬ _${item.start}_-_${item.end}_ — [${item.name}](${item.link})\n`;
+                message += `⚬ _${item.start}_-_${item.end}_ — [${item.name}](${item.link})\n`;
         }
     });
     await ctx.reply(message, { parse_mode: "Markdown" });
