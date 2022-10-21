@@ -74,15 +74,15 @@ const sendlink = () => {
 }
 
 /* No automatic actions until on Heroku Webhooks */
-// setInterval(() => {
-//     let data = sendlink();
-//     let link = data[0];
-//     let name = data[1];
-//     let sent = data[2];
-//     if (link != "" && !sent) {
-//         bot.api.sendMessage(<string>process.env.GROUP_ID, `<b>Починається урок ${name}</b> \n${link}`);
-//     }
-// }, 1000 * 60);
+setInterval(() => {
+    let data = sendlink();
+    let link = data[0];
+    let name = data[1];
+    let sent = data[2];
+    if (link != "" && !sent) {
+        bot.api.sendMessage(<string>process.env.GROUP_ID, `<b>Починається урок ${name}</b> \n${link}`);
+    }
+}, 1000 * 60);
 
 
 bot.command("link", async (ctx) => {
