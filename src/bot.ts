@@ -7,8 +7,8 @@ moment.tz.setDefault("Europe/Kyiv");
 export const bot = new Bot<botcontext>(<string>process.env.BOT_TOKEN);
 import { parseMode } from "@grammyjs/parse-mode";
 import { readFileSync } from "fs";
-const messages: mgs = JSON.parse(readFileSync("../../data/messages.json", "utf-8"));
-const links: urls = JSON.parse(readFileSync("../../data/links.json", "utf-8"));
+const messages: mgs = JSON.parse(readFileSync("./data/messages.json", "utf-8"));
+const links: urls = JSON.parse(readFileSync("./data/links.json", "utf-8"));
 const english_group_message = `1. <a href="${links["EnglishA"]}">Чепурна Вікторія Вікторівна</a>\n2. <a href="${links["EnglishB"]}">Дунько Ольга Миколаївна</a>`
 const informatics_group_message = `1. <a href="${links["InformaticsA"]}">Беднар Марія Михайлівна</a>\n2. <a href="${links["InformaticsB"]}">Шеремет Марія Ярославівна</a>`;
 const schedule: { [key: string]: { start: string, end: string, link: string, name: string, sent?: boolean }[] } = {
