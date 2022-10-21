@@ -1,10 +1,10 @@
-import { urls, mgs } from './index.d';
+import { urls, mgs } from './bot.d';
 import { Bot, Context } from "grammy";
 import moment from "moment-timezone";
 import { hydrate, HydrateFlavor } from "@grammyjs/hydrate";
 type botcontext = HydrateFlavor<Context>;
 moment.tz.setDefault("Europe/Kyiv");
-const bot = new Bot<botcontext>(<string>process.env.BOT_TOKEN);
+export const bot = new Bot<botcontext>(<string>process.env.BOT_TOKEN);
 import { parseMode } from "@grammyjs/parse-mode";
 import { readFileSync } from "fs";
 const messages: mgs = JSON.parse(readFileSync("./data/messages.json", "utf-8"));
