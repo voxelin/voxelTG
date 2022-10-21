@@ -5,7 +5,7 @@
   "main": "./build/index.js",
   "type": "module",
   "scripts": {
-    "start": "node ./build/index.js",
+    "start": "node ./build/src/index.js",
     "build": "npx tsc"
   },
   "repository": {

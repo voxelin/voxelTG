@@ -1,78 +1,54 @@
-import { urls, mgs } from './bot.d';
-import { Bot, Context } from "grammy";
+import { Bot } from "grammy";
+import { hydrate } from "@grammyjs/hydrate";
 import moment from "moment-timezone";
-import { hydrate, HydrateFlavor } from "@grammyjs/hydrate";
-type botcontext = HydrateFlavor<Context>;
-moment.tz.setDefault("Europe/Kyiv");
-export const bot = new Bot<botcontext>(String(process.env.BOT_TOKEN), {
-    botInfo: {
-        "id": 5749746961,
-        "is_bot": true,
-        "first_name": "чунгачанга",
-        "username": "tobehonest_bbot",
-        "can_join_groups": true,
-        "can_read_all_group_messages": false,
-        "supports_inline_queries": false
-    }
-});
+import { schedule } from "../data/schedule.js";
+import { botcontext } from './bot.d';
 import { parseMode } from "@grammyjs/parse-mode";
-import { readFileSync } from "fs";
-const messages: mgs = JSON.parse(readFileSync("./data/messages.json", "utf-8"));
-const links: urls = JSON.parse(readFileSync("./data/links.json", "utf-8"));
-const english_group_message = `1. <a href="${links["EnglishA"]}">Чепурна Вікторія Вікторівна</a>\n2. <a href="${links["EnglishB"]}">Дунько Ольга Миколаївна</a>`
-const informatics_group_message = `1. <a href="${links["InformaticsA"]}">Беднар Марія Михайлівна</a>\n2. <a href="${links["InformaticsB"]}">Шеремет Марія Ярославівна</a>`;
-const schedule: { [key: string]: { start: string, end: string, link: string, name: string, sent?: boolean }[] } = {
-    "Monday": [
-        { start: "08:15", end: "09:00", link: links["German"], name: "💬 Німецька" },
-        { start: "09:15", end: "10:00", link: links["Physics"], name: "🔬 Фізика" },
-        { start: "10:15", end: "11:00", link: english_group_message, name: "📚 Англійська" },
-        { start: "11:15", end: "12:00", link: links["Chemistry"], name: "🧪 Хімія" },
-        { start: "12:10", end: "12:55", link: links["Algebra"], name: "📐 Алгебра" },
-        { start: "13:05", end: "13:50", link: links["Ukrainian"], name: "📚 Українська мова" },
-    ],
-    "Tuesday": [
-        { start: "08:15", end: "09:00", link: links["FLit"], name: "📚 Зарубіжна література" },
-        { start: "09:15", end: "10:00", link: links["Art"], name: "🎨 Мистецтво" },
-        { start: "10:15", end: "11:00", link: links["Geometry"], name: "📐 Геометрія" },
-        { start: "11:15", end: "12:00", link: links["UkrainianLit"], name: "📚 Українська література" },
-        { start: "12:10", end: "12:55", link: links["History"], name: "📜 Історія України" },
-        { start: "13:05", end: "13:50", link: links["Ukrainian"], name: "📚 Українська мова" },
-        { start: "13:55", end: "14:40", link: links["Geography"], name: "🌍 Географія" },
-    ],
-    "Wednesday": [
-        { start: "08:15", end: "09:00", link: links["History"], name: "📜 Всесвітня Історія" },
-        { start: "09:15", end: "10:00", link: links["Physics"], name: "🔬 Фізика" },
-        { start: "10:15", end: "11:00", link: english_group_message, name: "📚 Англійська" },
-        { start: "11:15", end: "12:00", link: links["Chemistry"], name: "🧪 Хімія" },
-        { start: "12:10", end: "12:55", link: english_group_message, name: "📚 Англійська" },
-        { start: "13:05", end: "13:50", link: informatics_group_message, name: "💻 Інформатика" },
-        { start: "13:55", end: "14:40", link: links["Biology"], name: "🦠 Біологія" },
-    ],
-    "Thursday": [
-        { start: "08:15", end: "09:00", link: links["Algebra"], name: "📐 Алгебра" },
-        { start: "09:15", end: "10:00", link: links["FLit"], name: "📚 Зарубіжна література" },
-        { start: "10:15", end: "11:00", link: links["Physics"], name: "🔬 Фізика" },
-        { start: "11:15", end: "12:00", link: links["Law"], name: "📜 Правознавство" },
-        { start: "12:10", end: "12:55", link: links["German"], name: "💬 Німецька" },
-        { start: "13:05", end: "13:50", link: english_group_message, name: "📚 Англійська" },
-        { start: "13:55", end: "14:40", link: links["Geography"], name: "🌍 Географія" },
-    ],
-    "Friday": [
-        { start: "09:15", end: "10:00", link: links["UkrainianLit"], name: "📚 Українська література" },
-        { start: "10:15", end: "11:00", link: english_group_message, name: "📚 Англійська" },
-        { start: "11:15", end: "12:00", link: links["Biology"], name: "🦠 Біологія" },
-        { start: "12:10", end: "12:55", link: links["Geometry"], name: "📐 Геометрія" },
-        { start: "13:05", end: "13:50", link: informatics_group_message, name: "💻 Інформатика" },
-    ],
-}
+
+
+export const bot = new Bot<botcontext>(<string>process.env.BOT_TOKEN);
+
+moment.tz.setDefault("Europe/Kyiv");
+
 bot.api.config.use(parseMode("HTML"));
 bot.use(hydrate());
+
+
 bot.command("start", (ctx) => {
-    ctx.reply("Щоб дізнатись розклад, надішліть /sch");
+    ctx.reply("Доступні команди:\n\n" + "/link - посилання на заняття\n" + "/sch - розклад занять\n" + "/help - допомога\n" + "/about - про бота");
 });
-bot.command("sch", (ctx) => {
-    ctx.reply(messages[moment().format("dddd")], { parse_mode: "MarkdownV2" });
+
+bot.command("about", (ctx) => {
+    ctx.reply("Цей бот був створений для зручного доступу до розкладу занять та посилань на заняття.\n\n" + "Розробник: @ieljit");
 });
+
+bot.command("help", (ctx) => {
+    ctx.reply("Якщо у вас виникли проблеми з роботою бота, напишіть @ieljit");
+});
+
+bot.command("schedule", async (ctx) => {
+    let day = moment().format("dddd");
+    let second_message = "🗓️ *Графік на сьогодні*:\n";
+    schedule[day].forEach((item) => {
+        // if (item.name == "📚 Англійська" || item.name == "💻 Інформатика") {
+        //     second_message += `     ⚬ _${item.start}_-_${item.end}_ — ${item.name} ([](${item.link}) | []())\n`;
+        // } else {
+        //     second_message += `     ⚬ _${item.start}_-_${item.end}_ — [${item.name}](${item.link})\n`;
+        // }
+        switch (item.name) {
+            case "📚 Англійська":
+                second_message += `     ⚬ _${item.start}_-_${item.end}_ — ${item.name} ([Чепурна](${item.link[0]}) | [Дунько](${item.link[1]}))\n`;
+                break;
+            case "💻 Інформатика":
+                second_message += `     ⚬ _${item.start}_-_${item.end}_ — ${item.name} ([Беднар](${item.link[0]}) | [Шеремет](${item.link[1]}))\n`;
+                break;
+            default:
+                second_message += `     ⚬ _${item.start}_-_${item.end}_ — [${item.name}](${item.link})\n`;    
+        }
+    });
+    await ctx.reply(second_message, { parse_mode: "Markdown" });
+});
+
 
 const sendlink = () => {
     let day = moment().format("dddd");
@@ -82,7 +58,7 @@ const sendlink = () => {
     let name = "";
     for (let i = 0; i < schedule[day].length; i++) {
         if (time >= schedule[day][i].start && time <= schedule[day][i].end) {
-            link = schedule[day][i].link;
+            link = String(schedule[day][i].link);
             name = schedule[day][i].name;
             sent = schedule[day][i].sent || false;
             schedule[day][i].sent = true
@@ -92,16 +68,17 @@ const sendlink = () => {
     return [link, name, sent];
 }
 
+/* No automatic actions until on Heroku Webhooks */
+// setInterval(() => {
+//     let data = sendlink();
+//     let link = data[0];
+//     let name = data[1];
+//     let sent = data[2];
+//     if (link != "" && !sent) {
+//         bot.api.sendMessage(<string>process.env.GROUP_ID, `<b>Починається урок ${name}</b> \n${link}`);
+//     }
+// }, 1000 * 60);
 
-setInterval(() => {
-    let data = sendlink();
-    let link = data[0];
-    let name = data[1];
-    let sent = data[2];
-    if (link != "" && !sent) {
-        bot.api.sendMessage(<string>process.env.GROUP_ID, `<b>Починається урок ${name}</b> \n${link}`);
-    }
-}, 1000 * 60);
 
 bot.command("link", async (ctx) => {
     let data = sendlink();

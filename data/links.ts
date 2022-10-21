@@ -1,4 +1,5 @@
-{
+import { urls } from './../src/bot.d';
+export const links: urls = {
     "German": "https://us05web.zoom.us/j/3942975249?pwd=ZUpwTGxlQWNjYWlNU1Zua1o1RGoxZz09",
     "Physics": "https://us05web.zoom.us/j/8947641185?pwd=WS9aOE9OQnRFalU2SjAzVUxPMGIrUT09",
     "EnglishA": "https://us04web.zoom.us/j/9643428378?pwd=ZVBQbUxhUXRBMnZoOWRyWHFkalBKUT09",
