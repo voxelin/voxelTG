@@ -4,7 +4,8 @@
   "description": "Telegram bot. Simple.",
   "main": "./dist/index.js",
   "scripts": {
-    "test": "echo \"\""
+    "build": "npx tsc",
+    "start": "node ./dist/index.js"
   },
   "repository": {
     "type": "git",
