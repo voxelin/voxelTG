@@ -1,22 +1,12 @@
 import { Bot } from "grammy";
 import { hydrate } from "@grammyjs/hydrate";
 import moment from "moment-timezone";
-import { schedule } from "../data/schedule.js";
+import { schedule } from "./data/schedule";
 import { botcontext } from './bot.d';
 import { parseMode } from "@grammyjs/parse-mode";
 
 
-export const bot = new Bot<botcontext>(<string>process.env.BOT_TOKEN, {
-    botInfo: {
-        "id": 5749746961,
-        "is_bot": true,
-        "first_name": "чунгачанга",
-        "username": "tobehonest_bbot",
-        "can_join_groups": true,
-        "can_read_all_group_messages": false,
-        "supports_inline_queries": false
-    }
-});
+const bot = new Bot<botcontext>(<string>process.env.BOT_TOKEN);
 
 moment.tz.setDefault("Europe/Kyiv");
 
@@ -48,12 +38,11 @@ bot.command("schedule", async (ctx) => {
                 message += `     ⚬ _${item.start}_-_${item.end}_ — ${item.name} ([Беднар](${item.link[0]}) | [Шеремет](${item.link[1]}))\n`;
                 break;
             default:
-                message += `     ⚬ _${item.start}_-_${item.end}_ — [${item.name}](${item.link})\n`;    
+                message += `     ⚬ _${item.start}_-_${item.end}_ — [${item.name}](${item.link})\n`;
         }
     });
     await ctx.reply(message, { parse_mode: "Markdown" });
 });
-
 
 const sendlink = () => {
     let day = moment().format("dddd");
@@ -73,7 +62,7 @@ const sendlink = () => {
     return [link, name, sent];
 }
 
-/* No automatic actions until on Heroku Webhooks */
+
 setInterval(() => {
     let data = sendlink();
     let link = data[0];
