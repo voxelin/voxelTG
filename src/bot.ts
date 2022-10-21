@@ -6,7 +6,17 @@ import { botcontext } from './bot.d';
 import { parseMode } from "@grammyjs/parse-mode";
 
 
-export const bot = new Bot<botcontext>(<string>process.env.BOT_TOKEN);
+export const bot = new Bot<botcontext>(<string>process.env.BOT_TOKEN, {
+    botInfo: {
+        "id": 5749746961,
+        "is_bot": true,
+        "first_name": "чунгачанга",
+        "username": "tobehonest_bbot",
+        "can_join_groups": true,
+        "can_read_all_group_messages": false,
+        "supports_inline_queries": false
+    }
+});
 
 moment.tz.setDefault("Europe/Kyiv");
 
@@ -28,25 +38,20 @@ bot.command("help", (ctx) => {
 
 bot.command("schedule", async (ctx) => {
     let day = moment().format("dddd");
-    let second_message = "🗓️ *Графік на сьогодні*:\n";
+    let message = "🗓️ *Графік на сьогодні*:\n";
     schedule[day].forEach((item) => {
-        // if (item.name == "📚 Англійська" || item.name == "💻 Інформатика") {
-        //     second_message += `     ⚬ _${item.start}_-_${item.end}_ — ${item.name} ([](${item.link}) | []())\n`;
-        // } else {
-        //     second_message += `     ⚬ _${item.start}_-_${item.end}_ — [${item.name}](${item.link})\n`;
-        // }
         switch (item.name) {
             case "📚 Англійська":
-                second_message += `     ⚬ _${item.start}_-_${item.end}_ — ${item.name} ([Чепурна](${item.link[0]}) | [Дунько](${item.link[1]}))\n`;
+                message += `     ⚬ _${item.start}_-_${item.end}_ — ${item.name} ([Чепурна](${item.link[0]}) | [Дунько](${item.link[1]}))\n`;
                 break;
             case "💻 Інформатика":
-                second_message += `     ⚬ _${item.start}_-_${item.end}_ — ${item.name} ([Беднар](${item.link[0]}) | [Шеремет](${item.link[1]}))\n`;
+                message += `     ⚬ _${item.start}_-_${item.end}_ — ${item.name} ([Беднар](${item.link[0]}) | [Шеремет](${item.link[1]}))\n`;
                 break;
             default:
-                second_message += `     ⚬ _${item.start}_-_${item.end}_ — [${item.name}](${item.link})\n`;    
+                message += `     ⚬ _${item.start}_-_${item.end}_ — [${item.name}](${item.link})\n`;    
         }
     });
-    await ctx.reply(second_message, { parse_mode: "Markdown" });
+    await ctx.reply(message, { parse_mode: "Markdown" });
 });
 
 
