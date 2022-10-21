@@ -4,7 +4,17 @@ import moment from "moment-timezone";
 import { hydrate, HydrateFlavor } from "@grammyjs/hydrate";
 type botcontext = HydrateFlavor<Context>;
 moment.tz.setDefault("Europe/Kyiv");
-export const bot = new Bot<botcontext>(<string>process.env.BOT_TOKEN);
+export const bot = new Bot<botcontext>(String(process.env.BOT_TOKEN), {
+    botInfo: {
+        "id": 5749746961,
+        "is_bot": true,
+        "first_name": "чунгачанга",
+        "username": "tobehonest_bbot",
+        "can_join_groups": true,
+        "can_read_all_group_messages": false,
+        "supports_inline_queries": false
+    }
+});
 import { parseMode } from "@grammyjs/parse-mode";
 import { readFileSync } from "fs";
 const messages: mgs = JSON.parse(readFileSync("./data/messages.json", "utf-8"));
