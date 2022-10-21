@@ -2,10 +2,10 @@
   "name": "grammy-tobehonest",
   "version": "0.0.1",
   "description": "Telegram bot. Simple.",
-  "main": "./build/index.js",
+  "main": "./dist/index.js",
   "type": "module",
   "scripts": {
-    "start": "node ./build/src/index.js",
+    "start": "node ./dist/src/index.js",
     "build": "npx tsc"
   },
   "repository": {

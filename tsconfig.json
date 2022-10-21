@@ -3,7 +3,7 @@
     "target": "ESNEXT",
     "module": "esnext",
     "lib": ["ES2021"],
-    "outDir": "./build/",
+    "outDir": "./dist/",
     "strict": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
