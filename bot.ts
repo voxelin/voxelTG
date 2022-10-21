@@ -13,9 +13,19 @@ moment.tz.setDefault("Europe/Kyiv");
 bot.api.config.use(parseMode("HTML"));
 bot.use(hydrate());
 
+const commands = [
+    "/start - Основні відомості про бота та команди",
+    "/help - Контакти для допомоги",
+    "/link - Посилання на заняття",
+    "/schedule - Розклад занять"
+]
 
 bot.command("start", (ctx) => {
-    ctx.reply("Доступні команди:\n\n" + "/link - посилання на заняття\n" + "/sch - розклад занять\n" + "/help - допомога\n" + "/about - про бота");
+    let message: string = "*Список команд:*\n";
+    commands.forEach((command) => {
+        message += command + "\n";
+    });
+    ctx.reply(message, { parse_mode: "Markdown" });
 });
 
 bot.command("about", (ctx) => {
