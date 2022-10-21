@@ -1,3 +1,5 @@
+import { HydrateFlavor } from "@grammyjs/hydrate"
+import { Context } from "grammy"
 export type urls = {
     "German": string,
     "Physics": string,
@@ -28,3 +30,5 @@ export type mgs = {
     "Saturday": string,
     "Sunday": string
 }
+
+export type botcontext = HydrateFlavor<Context>;

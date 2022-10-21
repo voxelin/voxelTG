@@ -1,17 +1,6 @@
-import { urls, mgs } from './index.d';
-import { Bot, Context } from "grammy";
-import moment from "moment-timezone";
-import { hydrate, HydrateFlavor } from "@grammyjs/hydrate";
-type botcontext = HydrateFlavor<Context>;
-moment.tz.setDefault("Europe/Kyiv");
-const bot = new Bot<botcontext>(<string>process.env.BOT_TOKEN);
-import { parseMode } from "@grammyjs/parse-mode";
-import { readFileSync } from "fs";
-const messages: mgs = JSON.parse(readFileSync("./data/messages.json", "utf-8"));
-const links: urls = JSON.parse(readFileSync("./data/links.json", "utf-8"));
-const english_group_message = `1. <a href="${links["EnglishA"]}">Чепурна Вікторія Вікторівна</a>\n2. <a href="${links["EnglishB"]}">Дунько Ольга Миколаївна</a>`
-const informatics_group_message = `1. <a href="${links["InformaticsA"]}">Беднар Марія Михайлівна</a>\n2. <a href="${links["InformaticsB"]}">Шеремет Марія Ярославівна</a>`;
-const schedule: { [key: string]: { start: string, end: string, link: string, name: string, sent?: boolean }[] } = {
+import { links } from "./links"
+import { english_group_message, informatics_group_message } from "./messages"
+export const schedule: { [key: string]: { start: string, end: string, link: string, name: string, sent?: boolean }[] } = {
     "Monday": [
         { start: "08:15", end: "09:00", link: links["German"], name: "💬 Німецька" },
         { start: "09:15", end: "10:00", link: links["Physics"], name: "🔬 Фізика" },
@@ -55,53 +44,3 @@ const schedule: { [key: string]: { start: string, end: string, link: string, nam
         { start: "13:05", end: "13:50", link: informatics_group_message, name: "💻 Інформатика" },
     ],
 }
-bot.api.config.use(parseMode("HTML"));
-bot.use(hydrate());
-bot.command("start", (ctx) => {
-    ctx.reply("Щоб дізнатись розклад, надішліть /sch");
-});
-bot.command("sch", (ctx) => {
-    ctx.reply(messages[moment().format("dddd")], { parse_mode: "MarkdownV2" });
-});
-
-const sendlink = () => {
-    let day = moment().format("dddd");
-    let time = moment().format("HH:mm");
-    let link = "";
-    let sent = false;
-    let name = "";
-    for (let i = 0; i < schedule[day].length; i++) {
-        if (time >= schedule[day][i].start && time <= schedule[day][i].end) {
-            link = schedule[day][i].link;
-            name = schedule[day][i].name;
-            sent = schedule[day][i].sent || false;
-            schedule[day][i].sent = true
-            break;
-        }
-    }
-    return [link, name, sent];
-}
-
-
-setInterval(() => {
-    let data = sendlink();
-    let link = data[0];
-    let name = data[1];
-    let sent = data[2];
-    if (link != "" && !sent) {
-        bot.api.sendMessage(<string>process.env.GROUP_ID, `<b>Починається урок ${name}</b> \n${link}`);
-    }
-}, 1000 * 60);
-
-bot.command("link", async (ctx) => {
-    let data = sendlink();
-    let link = data[0];
-    let name = data[1];
-    if (link != "") {
-        ctx.reply(`<b>${name}</b> \n${link}`);
-    } else {
-        ctx.reply("Зараз перерва або ж уроки закінчились. 🤔");
-    }
-});
-
-bot.start();
