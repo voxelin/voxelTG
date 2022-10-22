@@ -39,18 +39,22 @@ bot.command("help", (ctx) => {
 bot.command("schedule", async (ctx) => {
     let day = moment().format("dddd");
     let message = "🗓️ *Графік на сьогодні*:\n";
-    schedule[day].forEach((item) => {
-        switch (item.name) {
-            case "📚 Англійська":
-                message += `⚬ _${item.start}_-_${item.end}_ — ${item.name} ([Чепурна](${item.link[0]}) | [Дунько](${item.link[1]}))\n`;
-                break;
-            case "💻 Інформатика":
-                message += `⚬ _${item.start}_-_${item.end}_ — ${item.name} ([Беднар](${item.link[0]}) | [Шеремет](${item.link[1]}))\n`;
-                break;
-            default:
-                message += `⚬ _${item.start}_-_${item.end}_ — [${item.name}](${item.link})\n`;
-        }
-    });
+    if (day != "Saturday" && day != "Sunday") {
+        schedule[day].forEach((item) => {
+            switch (item.name) {
+                case "📚 Англійська":
+                    message += `⚬ _${item.start}_-_${item.end}_ — ${item.name} ([Чепурна](${item.link[0]}) | [Дунько](${item.link[1]}))\n`;
+                    break;
+                case "💻 Інформатика":
+                    message += `⚬ _${item.start}_-_${item.end}_ — ${item.name} ([Беднар](${item.link[0]}) | [Шеремет](${item.link[1]}))\n`;
+                    break;
+                default:
+                    message += `⚬ _${item.start}_-_${item.end}_ — [${item.name}](${item.link})\n`;
+            }
+        });
+    } else {
+        message = "❌ *Сьогодні вихідний!*"
+    }
     await ctx.reply(message, { parse_mode: "Markdown" });
 });
 
@@ -60,14 +64,18 @@ const sendlink = () => {
     let link = "";
     let sent = false;
     let name = "";
-    for (let i = 0; i < schedule[day].length; i++) {
-        if (time >= schedule[day][i].start && time <= schedule[day][i].end) {
-            link = String(schedule[day][i].link);
-            name = schedule[day][i].name;
-            sent = schedule[day][i].sent || false;
-            schedule[day][i].sent = true
-            break;
+    if (day != "Saturday" && day != "Sunday") {
+        for (let i = 0; i < schedule[day].length; i++) {
+            if (time >= schedule[day][i].start && time <= schedule[day][i].end) {
+                link = String(schedule[day][i].link);
+                name = schedule[day][i].name;
+                sent = schedule[day][i].sent || false;
+                schedule[day][i].sent = true
+                break;
+            }
         }
+    } else {
+        return [false, false, false];
     }
     return [link, name, sent];
 }
@@ -78,8 +86,10 @@ setInterval(() => {
     let link = data[0];
     let name = data[1];
     let sent = data[2];
-    if (link != "" && !sent) {
+    if (link && name && !sent) {
         bot.api.sendMessage(<string>process.env.GROUP_ID, `<b>Починається урок ${name}</b> \n${link}`);
+    } else {
+        return;
     }
 }, 1000 * 60);
 
