@@ -6,7 +6,22 @@ import { botcontext } from './typings/bot';
 import { parseMode } from "@grammyjs/parse-mode";
 
 
-const bot = new Bot<botcontext>(String(process.env.BOT_TOKEN));
+export const bot = new Bot<botcontext>(String(process.env.BOT_TOKEN), {
+    botInfo: {
+        "id": 5718541363,
+        "is_bot": true,
+        "first_name": "тестчунга",
+        "username": "testchungabot",
+        "can_join_groups": true,
+        "can_read_all_group_messages": false,
+        "supports_inline_queries": false
+    },
+    client: {
+        canUseWebhookReply(method) {
+            return method === "sendChatAction";
+        },
+    }
+});
 
 moment.tz.setDefault("Europe/Kyiv");
 
