@@ -1,5 +1,5 @@
 import { links } from "./links.js";
-export const schedule: { [key: string]: { start: string, end: string, link: string | string[], name: string, sent?: boolean }[] } = {
+export const schedule = {
     "Monday": [
         { start: "08:15", end: "09:00", link: links["German"], name: "💬 Німецька" },
         { start: "09:15", end: "10:00", link: links["Physics"], name: "🔬 Фізика" },
@@ -42,4 +42,4 @@ export const schedule: { [key: string]: { start: string, end: string, link: stri
         { start: "12:10", end: "12:55", link: links["Geometry"], name: "📐 Геометрія" },
         { start: "13:05", end: "13:50", link: [links["InformaticsA"], links["InformaticsB"]], name: "💻 Інформатика" },
     ],
-}
+};

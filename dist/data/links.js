@@ -1,5 +1,4 @@
-import { zoom_url } from '../typings/bot.js';
-export const links: zoom_url = {
+export const links = {
     "German": "https://us05web.zoom.us/j/3942975249?pwd=ZUpwTGxlQWNjYWlNU1Zua1o1RGoxZz09",
     "Physics": "https://us05web.zoom.us/j/8947641185?pwd=WS9aOE9OQnRFalU2SjAzVUxPMGIrUT09",
     "EnglishA": "https://us04web.zoom.us/j/9643428378?pwd=ZVBQbUxhUXRBMnZoOWRyWHFkalBKUT09",
@@ -17,4 +16,4 @@ export const links: zoom_url = {
     "FLit": "https://us04web.zoom.us/j/72684571864?pwd=bC9yeTQQ3uWIYwGhnNb90BwuTZbvuA.1",
     "Art": "https://us04web.zoom.us/j/9276332346?pwd=eDN5WG9TNjFMSXNkeTZxMEpnNFVtdz09",
     "Law": "https://us05web.zoom.us/j/8796615923?pwd=K3N6YlBuTTNjTjZ6VzNXVENoY2VRUT09"
-}
+};
