@@ -8,4 +8,6 @@ const app = express();
 app.use(express.json());
 app.use(`/${secretPath}`, webhookCallback(bot, "express"));
 
-app.listen(Number(process.env.PORT));
+app.listen(Number(process.env.PORT), () => {
+    bot.api.setWebhook(`https://${process.env.HEROKU_APP_NAME}.herokuapp.com/${secretPath}`);
+});
