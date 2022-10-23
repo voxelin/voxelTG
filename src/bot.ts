@@ -15,6 +15,11 @@ export const bot = new Bot<botcontext>(String(process.env.BOT_TOKEN), {
         "can_join_groups": true,
         "can_read_all_group_messages": false,
         "supports_inline_queries": false
+    },
+    client: {
+        canUseWebhookReply(method) {
+            return method === "sendChatAction";
+        },
     }
 });
 
