@@ -31,4 +31,4 @@ export type mgs = {
     "Sunday": string
 }
 
-export type botcontext = HydrateFlavor<Context>;
+export type botcontext = Context & HydrateFlavor<Context>;

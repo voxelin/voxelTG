@@ -2,11 +2,11 @@ import { Bot } from "grammy";
 import { hydrate } from "@grammyjs/hydrate";
 import moment from "moment-timezone";
 import { schedule } from "./data/schedule";
-import { botcontext } from './bot.d';
+import { botcontext } from './typings/bot';
 import { parseMode } from "@grammyjs/parse-mode";
 
 
-const bot = new Bot<botcontext>(<string>process.env.BOT_TOKEN);
+const bot = new Bot<botcontext>(String(process.env.BOT_TOKEN));
 
 moment.tz.setDefault("Europe/Kyiv");
 
@@ -79,7 +79,7 @@ setInterval(() => {
     let name = data[1];
     let sent = data[2];
     if (link != "" && !sent) {
-        bot.api.sendMessage(<string>process.env.GROUP_ID, `<b>Починається урок ${name}</b> \n${link}`);
+        bot.api.sendMessage(String(process.env.GROUP_ID), `<b>Починається урок ${name}</b> \n${link}`);
     }
 }, 1000 * 60);
 
