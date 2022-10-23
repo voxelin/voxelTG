@@ -8,10 +8,10 @@ import { parseMode } from "@grammyjs/parse-mode";
 
 export const bot = new Bot<botcontext>(String(process.env.BOT_TOKEN), {
     botInfo: {
-        "id": 5718541363,
+        "id": 5558185718,
         "is_bot": true,
-        "first_name": "тестчунга",
-        "username": "testchungabot",
+        "first_name": "чунгачанга рімеке",
+        "username": "chungachanga_rebot",
         "can_join_groups": true,
         "can_read_all_group_messages": false,
         "supports_inline_queries": false
