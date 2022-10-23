@@ -1,27 +1,12 @@
 import { Bot } from "grammy";
 import { hydrate } from "@grammyjs/hydrate";
 import moment from "moment-timezone";
-import { schedule } from "./data/schedule.js";
-import { botcontext } from './typings/bot.js';
+import { schedule } from "./data/schedule";
+import { botcontext } from './typings/bot';
 import { parseMode } from "@grammyjs/parse-mode";
 
 
-export const bot = new Bot<botcontext>(String(process.env.BOT_TOKEN), {
-    botInfo: {
-        "id": 5558185718,
-        "is_bot": true,
-        "first_name": "чунгачанга рімеке",
-        "username": "chungachanga_rebot",
-        "can_join_groups": true,
-        "can_read_all_group_messages": false,
-        "supports_inline_queries": false
-    },
-    client: {
-        canUseWebhookReply(method) {
-            return method === "sendChatAction";
-        },
-    }
-});
+const bot = new Bot<botcontext>(String(process.env.BOT_TOKEN));
 
 moment.tz.setDefault("Europe/Kyiv");
 

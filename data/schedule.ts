@@ -1,4 +1,4 @@
-import { links } from "./links.js";
+import { links } from "./links";
 export const schedule: { [key: string]: { start: string, end: string, link: string | string[], name: string, sent?: boolean }[] } = {
     "Monday": [
         { start: "08:15", end: "09:00", link: links["German"], name: "💬 Німецька" },
