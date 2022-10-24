@@ -40,7 +40,7 @@ bot.command("help", (ctx) => {
 });
 
 bot.command("schedule", (ctx) => {
-    ctx.reply("*Оберіть день*:", { parse_mode: "Markdown", reply_markup: schedule_days_menu });
+    ctx.reply("*Оберіть день 📆*:", { parse_mode: "Markdown", reply_markup: schedule_days_menu });
 });
 
 const sendlink = () => {
