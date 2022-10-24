@@ -26,6 +26,7 @@
   "homepage": "https://github.com/ieljit/tbh#readme",
   "dependencies": {
     "@grammyjs/hydrate": "^1.2.1",
+    "@grammyjs/menu": "^1.1.2",
     "@grammyjs/parse-mode": "^1.5.0",
     "grammy": "^1.11.2",
     "moment-timezone": "^0.5.38"

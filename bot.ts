@@ -4,14 +4,15 @@ import moment from "moment-timezone";
 import { schedule } from "./data/schedule";
 import { botcontext } from './typings/bot';
 import { parseMode } from "@grammyjs/parse-mode";
-
-
+import { schedule_days_menu } from "./typings/menu";
+import { show_schedule } from "./typings/menu";
 const bot = new Bot<botcontext>(String(process.env.BOT_TOKEN));
 
 moment.tz.setDefault("Europe/Kyiv");
 
 bot.api.config.use(parseMode("HTML"));
 bot.use(hydrate());
+bot.use(schedule_days_menu);
 
 const commands = [
     "/start - Основні відомості про бота та команди",
@@ -37,25 +38,7 @@ bot.command("help", (ctx) => {
 });
 
 bot.command("schedule", async (ctx) => {
-    let day = moment().format("dddd");
-    let message = "🗓️ *Графік на сьогодні*:\n";
-    if (day != "Saturday" && day != "Sunday") {
-        schedule[day].forEach((item) => {
-            switch (item.name) {
-                case "📚 Англійська":
-                    message += `⚬ _${item.start}_-_${item.end}_ — ${item.name} ([Чепурна](${item.link[0]}) | [Дунько](${item.link[1]}))\n`;
-                    break;
-                case "💻 Інформатика":
-                    message += `⚬ _${item.start}_-_${item.end}_ — ${item.name} ([Беднар](${item.link[0]}) | [Шеремет](${item.link[1]}))\n`;
-                    break;
-                default:
-                    message += `⚬ _${item.start}_-_${item.end}_ — [${item.name}](${item.link})\n`;
-            }
-        });
-    } else {
-        message = "❌ *Сьогодні вихідний!*"
-    }
-    await ctx.reply(message, { parse_mode: "Markdown" });
+    ctx.reply(await show_schedule(moment().format("dddd")), { parse_mode: "Markdown", reply_markup: schedule_days_menu });
 });
 
 const sendlink = () => {
@@ -87,7 +70,7 @@ setInterval(() => {
     let name = data[1];
     let sent = data[2];
     if (link && name && !sent) {
-        bot.api.sendMessage(String(process.env.GROUP_ID), `<b>Починається урок ${name}</b> \n${link}`);
+        bot.api.sendMessage(String(process.env.GROUP_ID), `<b>Починається урок ${name}</b> \n${link}`, { disable_web_page_preview: true, parse_mode: "HTML" });
     } else {
         return;
     }
