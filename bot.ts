@@ -5,7 +5,8 @@ import { schedule } from "./data/schedule";
 import { botcontext } from './typings/bot';
 import { parseMode } from "@grammyjs/parse-mode";
 import { schedule_days_menu } from "./typings/menu";
-import { show_schedule } from "./typings/menu";
+import { autoRetry } from "@grammyjs/auto-retry";
+
 const bot = new Bot<botcontext>(String(process.env.BOT_TOKEN));
 
 moment.tz.setDefault("Europe/Kyiv");
@@ -13,6 +14,7 @@ moment.tz.setDefault("Europe/Kyiv");
 bot.api.config.use(parseMode("HTML"));
 bot.use(hydrate());
 bot.use(schedule_days_menu);
+bot.api.config.use(autoRetry());
 
 const commands = [
     "/start - Основні відомості про бота та команди",
@@ -37,8 +39,8 @@ bot.command("help", (ctx) => {
     ctx.reply("Якщо у вас виникли проблеми з роботою бота, напишіть @ieljit");
 });
 
-bot.command("schedule", async (ctx) => {
-    ctx.reply(await show_schedule(moment().format("dddd")), { parse_mode: "Markdown", reply_markup: schedule_days_menu });
+bot.command("schedule", (ctx) => {
+    ctx.reply("*Оберіть день*:", { parse_mode: "Markdown", reply_markup: schedule_days_menu });
 });
 
 const sendlink = () => {
@@ -77,7 +79,7 @@ setInterval(() => {
 }, 1000 * 60);
 
 
-bot.command("link", async (ctx) => {
+bot.command("link", (ctx) => {
     let data = sendlink();
     let link = data[0];
     let name = data[1];
