@@ -1,6 +1,6 @@
 import { Menu } from "@grammyjs/menu";
 import { schedule } from "../data/schedule";
-import markdownToTxt from 'markdown-to-txt';
+import markdownToTxt from 'markdown-to-text';
 
 export const show_schedule = (day: string) => {
     const days_i18n:any = {
