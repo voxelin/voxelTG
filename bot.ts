@@ -4,7 +4,7 @@ import moment from "moment-timezone";
 import { schedule } from "./data/schedule";
 import { botcontext } from './typings/bot';
 import { parseMode } from "@grammyjs/parse-mode";
-import { schedule_days_menu } from "./typings/menu";
+import { schedule_days_menu, show_schedule } from "./typings/menu";
 import { autoRetry } from "@grammyjs/auto-retry";
 
 const bot = new Bot<botcontext>(String(process.env.BOT_TOKEN));
@@ -40,7 +40,7 @@ bot.command("help", (ctx) => {
 });
 
 bot.command("schedule", (ctx) => {
-    ctx.reply("*Оберіть день 📆*:", { parse_mode: "Markdown", reply_markup: schedule_days_menu });
+    ctx.reply(show_schedule(moment().format("dddd")), { parse_mode: "Markdown", reply_markup: schedule_days_menu, disable_web_page_preview: true });
 });
 
 const sendlink = () => {
