@@ -2,9 +2,11 @@ import { Menu } from "@grammyjs/menu";
 import { schedule } from "../data/schedule";
 import { v4 as uuidv4 } from "uuid";
 import { botcontext } from "./bot";
+import moment from "moment-timezone";
 
 export const show_schedule = (day: string) => {
-    const days_i18n:any = {
+    const week = moment().tz('Europe/Kyiv').isoWeek() % 2;
+    const days_i18n: {[day: string]: string} = {
         "Monday": "Понеділок",
         "Tuesday": "Вівторок",
         "Wednesday": "Середа",
@@ -21,12 +23,26 @@ export const show_schedule = (day: string) => {
                 case "💻 Інформатика":
                     message += `⚬ _${item.start}_-_${item.end}_ — ${item.name} ([Беднар](${item.link[0]}) | [Шеремет](${item.link[1]}))\n`;
                     break;
+                case "🎨 Мистецтво | 📜 Основи здоров'я":
+                    if (week == 1) {
+                        message += `⚬ _${item.start}_-_${item.end}_ — [📜 Основи здоров'я](${item.link[1]})\n`;
+                    } else {
+                        message += `⚬ _${item.start}_-_${item.end}_ — [🎨 Мистецтво](${item.link[0]})\n`;
+                    }
+                    break;
+                case "🌍 Географія | 📜 Історія України":
+                    if (week == 1) {
+                        message += `⚬ _${item.start}_-_${item.end}_ — [📜 Історія України](${item.link[1]})\n`;
+                    } else {
+                        message += `⚬ _${item.start}_-_${item.end}_ — [🌍 Географія](${item.link[0]})\n`;
+                    }
+                    break;
                 default:
                     message += `⚬ _${item.start}_-_${item.end}_ — [${item.name}](${item.link})\n`;
             }
         });
     } else {
-        message = "❌ *Сьогодні вихідний!*"
+        message = "❌ *Сьогодні вихідний!*\n"
     }
     message += "\n`ID: "+ uuidv4() +"`";
     return message;
