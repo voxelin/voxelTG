@@ -6,8 +6,17 @@ import { botcontext } from './typings/bot';
 import { parseMode } from "@grammyjs/parse-mode";
 import { schedule_days_menu, show_schedule } from "./typings/menu";
 import { autoRetry } from "@grammyjs/auto-retry";
+import winston from "winston";
 
 const bot = new Bot<botcontext>(String(process.env.BOT_TOKEN));
+const logger = winston.createLogger({
+    format: winston.format.json(),
+    defaultMeta: { service: 'user-service' },
+    transports: [
+        new winston.transports.Console({ format: winston.format.prettyPrint() }),
+    ],
+});
+
 
 moment.tz.setDefault("Europe/Kyiv");
 
@@ -37,6 +46,7 @@ bot.command("about", (ctx) => {
 
 bot.command("help", (ctx) => {
     ctx.reply("Якщо у вас виникли проблеми з роботою бота, напишіть @ieljit");
+    logger.info(`Help command was used by | ${ctx.from?.username || ctx.from?.first_name} |.`);
 });
 
 bot.command("schedule", (ctx) => {
@@ -73,6 +83,7 @@ setInterval(() => {
     let sent = data[2];
     if (link && name && !sent) {
         bot.api.sendMessage(String(process.env.GROUP_ID), `<b>Починається урок ${name}</b> \n${link}`, { disable_web_page_preview: true, parse_mode: "HTML" });
+        logger.info(`Link was sent automaticly: ${name}`);
     } else {
         return;
     }
@@ -85,6 +96,7 @@ bot.command("link", (ctx) => {
     let name = data[1];
     if (link != "") {
         ctx.reply(`<b>${name}</b> \n${link}`);
+        logger.info(`Link was requested by ${ctx.from?.username || ctx.from?.first_name}: ${name}`);
     } else {
         ctx.reply("Зараз перерва або ж уроки закінчились. 🤔");
     }

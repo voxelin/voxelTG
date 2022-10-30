@@ -32,7 +32,8 @@
     "@types/uuid": "^8.3.4",
     "grammy": "^1.11.2",
     "moment-timezone": "^0.5.38",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "winston": "^3.8.2"
   },
   "devDependencies": {
     "@types/node": "^18.11.3",
