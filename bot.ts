@@ -6,16 +6,11 @@ import { parseMode } from "@grammyjs/parse-mode";
 import { schedule_days_menu, show_schedule } from "./typings/menu";
 import { autoRetry } from "@grammyjs/auto-retry";
 import { run, sequentialize } from "@grammyjs/runner";
-import winston from "winston";
+import { Logtail } from "@logtail/node";
 import moment from "moment-timezone";
 
 const bot = new Bot<botcontext>(String(process.env.BOT_TOKEN));
-const logger = winston.createLogger({
-    format: winston.format.json(),
-    transports: [
-        new winston.transports.Console({ format: winston.format.colorize() }),
-    ],
-});
+const logger = new Logtail(String(process.env.LOGTAIL_TOKEN));
 
 function getSessionKey(ctx: Context) {
     return ctx.chat?.id.toString();
