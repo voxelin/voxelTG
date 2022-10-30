@@ -102,4 +102,6 @@ bot.command("link", (ctx) => {
     }
 });
 
-bot.start();
+bot.start().then(() => {
+    logger.info("Bot started with no errors." + {username: bot.botInfo.username, id: bot.botInfo.id});
+});
