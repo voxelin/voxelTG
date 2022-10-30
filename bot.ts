@@ -12,9 +12,8 @@ import moment from "moment-timezone";
 const bot = new Bot<botcontext>(String(process.env.BOT_TOKEN));
 const logger = winston.createLogger({
     format: winston.format.json(),
-    defaultMeta: { service: 'user-service' },
     transports: [
-        new winston.transports.Console({ format: winston.format.prettyPrint() }),
+        new winston.transports.Console({ format: winston.format.colorize() }),
     ],
 });
 
@@ -105,6 +104,7 @@ bot.command("link", (ctx) => {
         logger.info(`Link was requested by ${ctx.from?.username || ctx.from?.first_name}: ${name}`);
     } else {
         ctx.reply("Зараз перерва або ж уроки закінчились. 🤔");
+        logger.info(`Link was requested by ${ctx.from?.username || ctx.from?.first_name}: Not sent`);
     }
 });
 
