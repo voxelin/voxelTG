@@ -1,5 +1,5 @@
 import { HydrateFlavor } from "@grammyjs/hydrate"
-import { Context } from "grammy"
+import { Context, SessionFlavor } from "grammy"
 export type zoom_url = {
     "German": string,
     "Physics": string,
@@ -24,4 +24,4 @@ export type schedule = {
     [key: string]: { name: string, start: string, end: string, link: zoom_url[] | zoom_url }[]
 }
 
-export type botcontext = Context & HydrateFlavor<Context>;
+export type botcontext = Context & HydrateFlavor<Context> & SessionFlavor<Context>;
