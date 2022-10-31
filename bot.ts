@@ -75,21 +75,6 @@ const sendlink = () => {
     return [link, name, sent];
 }
 
-
-setInterval(() => {
-    let data = sendlink();
-    let link = data[0];
-    let name = data[1];
-    let sent = data[2];
-    if (link != "" && name && !sent) {
-        bot.api.sendMessage(String(process.env.GROUP_ID), `<b>Починається урок ${name}</b> \n${link}`, { disable_web_page_preview: true, parse_mode: "HTML" });
-        logger.info(`Link was sent automaticly: ${name}`);
-    } else {
-        return;
-    }
-}, 1000 * 60);
-
-
 bot.command("link", (ctx) => {
     let data = sendlink();
     let link = data[0];
