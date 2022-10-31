@@ -99,12 +99,16 @@ setInterval(async () => {
         logger.info(`Double link was sent automaticly: ${name}`);
     }
     if (!link && !name && !sent) {
-        bot.api.getChat(String(process.env.GROUP_ID)).then((chat) => {
-            if (chat.pinned_message) {
-                bot.api.unpinChatMessage(String(process.env.GROUP_ID), msg.message_id);
-                logger.info("Unpinned message with ID: " + msg.message_id);
-            }
-        });
+        try {
+            bot.api.getChat(String(process.env.GROUP_ID)).then((chat) => {
+                if (chat.pinned_message) {
+                    bot.api.unpinChatMessage(String(process.env.GROUP_ID), msg.message_id);
+                    logger.info("Unpinned message with ID: " + msg.message_id);
+                }
+            });
+        } catch (e) {
+            return logger.error("Unable to unpin message");
+        }
     }
 }, 1000 * 60);
 
