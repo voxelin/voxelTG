@@ -81,7 +81,7 @@ setInterval(() => {
     let link = data[0];
     let name = data[1];
     let sent = data[2];
-    if (link && name && !sent) {
+    if (link != "" && name && !sent) {
         bot.api.sendMessage(String(process.env.GROUP_ID), `<b>Починається урок ${name}</b> \n${link}`, { disable_web_page_preview: true, parse_mode: "HTML" });
         logger.info(`Link was sent automaticly: ${name}`);
     } else {
@@ -98,7 +98,7 @@ bot.command("link", (ctx) => {
         ctx.reply(`<b>${name}</b> \n${link}`);
         logger.info(`Link was requested by ${ctx.from?.username || ctx.from?.first_name}: ${name}`);
     } else {
-        ctx.reply("Зараз перерва або ж уроки закінчились. 🤔");
+        ctx.reply("Посилання на урок немає у моїй базі даних. 🤔");
         logger.info(`Link was requested by ${ctx.from?.username || ctx.from?.first_name}: Not sent`);
     }
 });
