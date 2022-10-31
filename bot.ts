@@ -22,7 +22,7 @@ bot.api.config.use(parseMode("HTML"));
 bot.use(hydrate());
 bot.use(schedule_days_menu);
 bot.use(sequentialize(getSessionKey))
-bot.use(session({ getSessionKey }));
+bot.use(session({ getSessionKey, initial: () => ({ last: 0 }) }));
 bot.api.config.use(autoRetry());
 
 const commands = [
@@ -80,22 +80,31 @@ setInterval(async () => {
     let link = data[0];
     let name = data[1];
     let sent = data[2];
+    let msg: import("@grammyjs/types/message.js").Message.TextMessage;
     if (link != "" && name && !sent) {
-        let message = await bot.api.sendMessage(String(process.env.GROUP_ID), `<b>Починається урок ${name}</b> \n${link}`, { disable_web_page_preview: true, parse_mode: "HTML" });
+        msg = await bot.api.sendMessage(String(process.env.GROUP_ID), `<b>Починається урок ${name}</b> \n${link}`, { disable_web_page_preview: true, parse_mode: "HTML" });
         try {
-            await bot.api.pinChatMessage(String(process.env.GROUP_ID), message.message_id);
+            await bot.api.pinChatMessage(String(process.env.GROUP_ID), msg.message_id);
         } catch (error) {
             return;
         }
         logger.info(`Link was sent automaticly: ${name}`);
     } else if (Array.isArray(link)) {
-        let message = await bot.api.sendMessage(String(process.env.GROUP_ID), `<b>Починається урок ${name}</b> \n1. ${link[0]}\n2. ${link[1]}`, { disable_web_page_preview: true, parse_mode: "HTML" });
+        msg = await bot.api.sendMessage(String(process.env.GROUP_ID), `<b>Починається урок ${name}</b> \n1. ${link[0]}\n2. ${link[1]}`, { disable_web_page_preview: true, parse_mode: "HTML" });
         try {
-            await bot.api.pinChatMessage(String(process.env.GROUP_ID), message.message_id);
+            await bot.api.pinChatMessage(String(process.env.GROUP_ID), msg.message_id);
         } catch (error) {
             return;
         }
         logger.info(`Double link was sent automaticly: ${name}`);
+    }
+    if (!link && !name && !sent) {
+        bot.api.getChat(String(process.env.GROUP_ID)).then((chat) => {
+            if (chat.pinned_message) {
+                bot.api.unpinChatMessage(String(process.env.GROUP_ID), msg.message_id);
+                logger.info("Unpinned message with ID: " + msg.message_id);
+            }
+        });
     }
 }, 1000 * 60);
 
