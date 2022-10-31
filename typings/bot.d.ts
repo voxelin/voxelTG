@@ -24,4 +24,4 @@ export type schedule = {
     [key: string]: { name: string, start: string, end: string, link: zoom_url[] | zoom_url }[]
 }
 
-export type botcontext = Context & HydrateFlavor<Context> & SessionFlavor<{ last: number; }>;
+export type CustomContext = Context & HydrateFlavor<Context> & SessionFlavor<{ last: number; }>;

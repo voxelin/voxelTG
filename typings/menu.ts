@@ -1,7 +1,7 @@
 import { Menu } from "@grammyjs/menu";
 import { schedule } from "../data/schedule";
 import { v4 as uuidv4 } from "uuid";
-import { botcontext } from "./bot";
+import { CustomContext } from "./bot";
 import moment from "moment-timezone";
 
 export const show_schedule = (day: string) => {
@@ -48,7 +48,7 @@ export const show_schedule = (day: string) => {
     return message;
 }
 
-export const schedule_days_menu = new Menu<botcontext>("schedule_days_menu", { onMenuOutdated: "Updated, try now." })
+export const schedule_days_menu = new Menu<CustomContext>("schedule_days_menu", { onMenuOutdated: "Updated, try now." })
     .text("Понеділок", (ctx) => {
         let s = show_schedule("Monday");
         ctx.editMessageText(s, { parse_mode: "Markdown", disable_web_page_preview: true })
