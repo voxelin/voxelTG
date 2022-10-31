@@ -56,13 +56,13 @@ bot.command("schedule", (ctx) => {
 const sendlink = () => {
     let day = moment().format("dddd");
     let time = moment().format("HH:mm");
-    let link = "";
+    let link: string | string[] = "";
     let sent = false;
     let name = "";
     if (day != "Saturday" && day != "Sunday") {
         for (let i = 0; i < schedule[day].length; i++) {
             if (time >= schedule[day][i].start && time <= schedule[day][i].end) {
-                link = String(schedule[day][i].link);
+                link = schedule[day][i].link;
                 name = schedule[day][i].name;
                 sent = schedule[day][i].sent || false;
                 schedule[day][i].sent = true
@@ -74,6 +74,20 @@ const sendlink = () => {
     }
     return [link, name, sent];
 }
+
+setInterval(() => {
+    let data = sendlink();
+    let link = data[0];
+    let name = data[1];
+    let sent = data[2];
+    if (link != "" && name && !sent) {
+        bot.api.sendMessage(String(process.env.GROUP_ID), `<b>Починається урок ${name}</b> \n${link}`, { disable_web_page_preview: true, parse_mode: "HTML" });
+        logger.info(`Link was sent automaticly: ${name}`);
+    } else if (Array.isArray(link)) {
+        bot.api.sendMessage(String(process.env.GROUP_ID), `<b>Починається урок ${name}</b> \n1. ${link[0]}\n2. ${link[1]}`, { disable_web_page_preview: true, parse_mode: "HTML" });
+        logger.info(`Double link was sent automaticly: ${name}`);
+    }
+}, 1000 * 60);
 
 bot.command("link", (ctx) => {
     let data = sendlink();
