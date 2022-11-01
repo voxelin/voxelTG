@@ -62,6 +62,7 @@ export class SchedulerBot<C extends CustomContext> extends Bot<C> {
         let link: string | string[] | boolean = false;
         let sent = false;
         let name: string | boolean = false;
+        let is_next = false;
         if (day != "Saturday" && day != "Sunday") {
             for (let i = 0; i < schedule[day].length; i++) {
                 if (time >= schedule[day][schedule[day].length - 1].end) {
@@ -79,12 +80,13 @@ export class SchedulerBot<C extends CustomContext> extends Bot<C> {
                     link = schedule[day][i + 1].link;
                     name = schedule[day][i + 1].name;
                     sent = schedule[day][i + 1].sent || false;
+                    is_next = true;
                     schedule[day][i + 1].sent = true;
                     break;
                 }
             }
         }
-        return [link, name, sent];
+        return [link, name, sent, is_next];
     }
 
     public async setTimer(gid: string | number) {

@@ -31,10 +31,10 @@ export class CommandHandler<Context extends CustomContext = CustomContext> {
     }
 
     public async link(ctx: Context) {
-        const data = await this.bot.automaticLink();
+        const data = await this.bot.requestLink(ctx);
         const week = moment().isoWeek() % 2;
-        const link = data[0];
-        let name = data[1];
+        const link = data![0];
+        let name = data![1];
         switch (name) {
             case "🎨 Мистецтво | 📜 Основи здоров'я":
                 if (week == 1) {
@@ -54,7 +54,9 @@ export class CommandHandler<Context extends CustomContext = CustomContext> {
                 break;
         }
         if (link != "") {
-            await ctx.reply(`<b>${name}</b> \n${link}`);
+            data![3] == true
+                ? await ctx.reply(`Посилання на наступний урок: <b>${name}</b> \n${link}`)
+                : await ctx.reply(`Урок <b>${name}</b> вже почався: \n${link}`);
         } else {
             await ctx.reply("На жаль, на урок <code>" + name + "</code> посилання немає. 🤔");
         }

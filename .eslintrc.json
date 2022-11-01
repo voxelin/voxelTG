@@ -15,7 +15,9 @@
         "project": "./tsconfig.json"
     },
     "rules": {
-        "prettier/prettier": "error"
+        "prettier/prettier": "error",
+        "@typescript-eslint/no-non-null-assertion": "off"
     },
-    "plugins": ["prettier", "@typescript-eslint"]
+    "plugins": ["prettier", "@typescript-eslint"],
+    "ignorePatterns": ["node_modules", "dist"]
 }
