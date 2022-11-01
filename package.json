@@ -5,7 +5,13 @@
   "main": "./dist/bot.js",
   "scripts": {
     "start": "node ./dist/bot.js",
-    "build": "npx tsc"
+    "build": "npx tsc",
+    "lint": "npx eslint . --ext .ts",
+    "lint:fix": "npx eslint . --ext .ts --fix",
+    "format": "npx prettier --write .",
+    "prepare": "husky install",
+    "test": "npx jest",
+    "test:cov": "npx jest --coverage"
   },
   "repository": {
     "type": "git",
@@ -31,13 +37,23 @@
     "@grammyjs/parse-mode": "^1.5.0",
     "@grammyjs/runner": "^1.0.4",
     "@logtail/node": "^0.1.12",
-    "@types/uuid": "^8.3.4",
     "grammy": "^1.11.2",
     "moment-timezone": "^0.5.38",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/node": "^18.11.3",
-    "typescript": "^4.9.0-dev.20221019"
+    "@types/uuid": "^8.3.4",
+    "@typescript-eslint/eslint-plugin": "^5.42.0",
+    "@typescript-eslint/parser": "^5.42.0",
+    "eslint": "^8.26.0",
+    "eslint-config-standard-with-typescript": "^23.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.4.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "husky": "^8.0.1",
+    "prettier": "2.7.1",
+    "typescript": "^4.8.4"
   }
 }

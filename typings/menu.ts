@@ -5,14 +5,14 @@ import { CustomContext } from "./bot";
 import moment from "moment-timezone";
 
 export const show_schedule = (day: string) => {
-    const week = moment().tz('Europe/Kyiv').isoWeek() % 2;
-    const days_i18n: {[day: string]: string} = {
-        "Monday": "Понеділок",
-        "Tuesday": "Вівторок",
-        "Wednesday": "Середа",
-        "Thursday": "Четвер",
-        "Friday": "П'ятниця",
-    }
+    const week = moment().tz("Europe/Kyiv").isoWeek() % 2;
+    const days_i18n: { [day: string]: string } = {
+        Monday: "Понеділок",
+        Tuesday: "Вівторок",
+        Wednesday: "Середа",
+        Thursday: "Четвер",
+        Friday: "П'ятниця",
+    };
     let message = `🗓️ *Графік на* _${days_i18n[day]}_:\n`;
     if (day != "Saturday" && day != "Sunday") {
         schedule[day].forEach((item) => {
@@ -42,30 +42,31 @@ export const show_schedule = (day: string) => {
             }
         });
     } else {
-        message = "❌ *Сьогодні вихідний!*\n"
+        message = "❌ *Сьогодні вихідний!*\n";
     }
-    message += "\n`ID: "+ uuidv4() +"`";
+    message += "\n`ID: " + uuidv4() + "`";
     return message;
-}
+};
 
 export const schedule_days_menu = new Menu<CustomContext>("schedule_days_menu", { onMenuOutdated: "Updated, try now." })
     .text("Понеділок", (ctx) => {
-        let s = show_schedule("Monday");
-        ctx.editMessageText(s, { parse_mode: "Markdown", disable_web_page_preview: true })
+        const s = show_schedule("Monday");
+        ctx.editMessageText(s, { parse_mode: "Markdown", disable_web_page_preview: true });
     })
     .text("Вівторок", async (ctx) => {
-        let s = show_schedule("Tuesday");
-        ctx.editMessageText(s, { parse_mode: "Markdown", disable_web_page_preview: true })
+        const s = show_schedule("Tuesday");
+        ctx.editMessageText(s, { parse_mode: "Markdown", disable_web_page_preview: true });
     })
     .text("Середа", async (ctx) => {
-        let s = show_schedule("Wednesday");
-        ctx.editMessageText(s, { parse_mode: "Markdown", disable_web_page_preview: true })
-    }).row()
+        const s = show_schedule("Wednesday");
+        ctx.editMessageText(s, { parse_mode: "Markdown", disable_web_page_preview: true });
+    })
+    .row()
     .text("Четвер", async (ctx) => {
-        let s = show_schedule("Thursday");
-        ctx.editMessageText(s, { parse_mode: "Markdown", disable_web_page_preview: true })
+        const s = show_schedule("Thursday");
+        ctx.editMessageText(s, { parse_mode: "Markdown", disable_web_page_preview: true });
     })
     .text("П'ятниця", async (ctx) => {
-        let s = show_schedule("Friday");
-        ctx.editMessageText(s, { parse_mode: "Markdown", disable_web_page_preview: true })
-    })
+        const s = show_schedule("Friday");
+        ctx.editMessageText(s, { parse_mode: "Markdown", disable_web_page_preview: true });
+    });
