@@ -1,8 +1,8 @@
 import { Menu } from "@grammyjs/menu";
-import { schedule } from "../data/schedule";
-import { v4 as uuidv4 } from "uuid";
-import { CustomContext } from "./bot";
 import moment from "moment-timezone";
+import { v4 as uuidv4 } from "uuid";
+import { schedule } from "../data/schedule";
+import { CustomContext } from "./bot";
 
 export const show_schedule = (day: string) => {
     const week = moment().tz("Europe/Kyiv").isoWeek() % 2;
