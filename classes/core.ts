@@ -1,14 +1,13 @@
-import { Bot, Context, session } from "grammy";
-import { hydrate } from "@grammyjs/hydrate";
-import { schedule } from "../data/schedule";
-import { CustomContext } from "../typings/bot";
-import { parseMode } from "@grammyjs/parse-mode";
-import { schedule_days_menu, show_schedule } from "../typings/menu";
 import { autoRetry } from "@grammyjs/auto-retry";
+import { hydrate } from "@grammyjs/hydrate";
+import { parseMode } from "@grammyjs/parse-mode";
 import { run, sequentialize } from "@grammyjs/runner";
 import { Logtail } from "@logtail/node";
+import { Bot, Context, session } from "grammy";
 import moment from "moment-timezone";
-import { CommandHandlerError } from "./errors";
+import { schedule } from "../data/schedule";
+import { CustomContext } from "../typings/bot";
+import { schedule_days_menu } from "../typings/menu";
 
 export class SchedulerBot<C extends CustomContext> extends Bot<C> {
     public logger = new Logtail(String(process.env.LOGTAIL_TOKEN));
@@ -37,7 +36,7 @@ export class SchedulerBot<C extends CustomContext> extends Bot<C> {
         this.logger?.info("Bot up and running! 🚀");
     }
 
-    public async sendlink() {
+    public async automaticLink() {
         const day = moment().format("dddd");
         const time = moment().format("HH:mm");
         let link: string | string[] | boolean = false;
@@ -57,8 +56,39 @@ export class SchedulerBot<C extends CustomContext> extends Bot<C> {
         return [link, name, sent];
     }
 
+    public async requestLink(ctx: C): Promise<(string | boolean | string[])[] | undefined> {
+        const day = moment().format("dddd");
+        const time = moment().format("HH:mm");
+        let link: string | string[] | boolean = false;
+        let sent = false;
+        let name: string | boolean = false;
+        if (day != "Saturday" && day != "Sunday") {
+            for (let i = 0; i < schedule[day].length; i++) {
+                if (time >= schedule[day][schedule[day].length - 1].end) {
+                    ctx.reply("Уроки закінчились, відпочивайте! 🫂");
+                    return;
+                }
+                if (time >= schedule[day][i].start && time <= schedule[day][i].end) {
+                    link = schedule[day][i].link;
+                    name = schedule[day][i].name;
+                    sent = schedule[day][i].sent || false;
+                    schedule[day][i].sent = true;
+                    break;
+                }
+                if (time >= schedule[day][i].end && time <= schedule[day][i + 1].start) {
+                    link = schedule[day][i + 1].link;
+                    name = schedule[day][i + 1].name;
+                    sent = schedule[day][i + 1].sent || false;
+                    schedule[day][i + 1].sent = true;
+                    break;
+                }
+            }
+        }
+        return [link, name, sent];
+    }
+
     public async setTimer(gid: string | number) {
-        const data = await this.sendlink();
+        const data = await this.automaticLink();
         const link = data[0];
         const name = data[1];
         const sent = data[2];
@@ -117,68 +147,6 @@ export class SchedulerBot<C extends CustomContext> extends Bot<C> {
                         await this.logger?.info(`Sent link to | ${gid} |`);
                     }
                     break;
-            }
-        }
-    }
-}
-
-export class CommandHandler<Context extends CustomContext = CustomContext> {
-    constructor(private readonly bot: SchedulerBot<Context>) {}
-
-    public async schedule(ctx: Context) {
-        await ctx.reply(show_schedule(moment().format("dddd")), {
-            parse_mode: "Markdown",
-            reply_markup: schedule_days_menu,
-            disable_web_page_preview: true,
-        });
-    }
-
-    public async start(ctx: Context) {
-        await ctx.reply("Працюю на благо учнів ліцею 🤖\nАвтор: @voxelin", { parse_mode: "Markdown" });
-    }
-
-    public async help(ctx: Context) {
-        await ctx.reply("Якщо у вас виникли проблеми з роботою бота, повідомте @voxelin 🙂");
-    }
-
-    public async about(ctx: Context) {
-        await ctx.reply(
-            "Цей бот був створений для зручного доступу до розкладу занять та посилань на заняття.\n" +
-                "Розробник: @voxelin",
-        );
-    }
-
-    public async link(ctx: Context) {
-        const data = await this.bot.sendlink();
-        const link = data[0];
-        const name = data[1];
-        if (link != "") {
-            await ctx.reply(`<b>${name}</b> \n${link}`);
-        } else {
-            await ctx.reply("Посилання на урок немає у моїй базі даних. 🤔");
-        }
-    }
-
-    public async handle(ctx: Context, command?: string) {
-        if (!command)
-            throw new CommandHandlerError(
-                "No command trigger provided. Please, provide a trigger without slash, e.g /start -> start",
-            );
-        if (command.startsWith("/")) {
-            throw new CommandHandlerError(
-                "Command trigger should not start with slash. Please, provide a trigger without slash, e.g /start -> start",
-            );
-        }
-        try {
-            await this[command as keyof CommandHandler](ctx);
-        } catch (e) {
-            if (e instanceof TypeError) {
-                return;
-            } else if (e instanceof CommandHandlerError) {
-                await ctx.reply("Помилка обробки команди. Повідомте @voxelin 🙂");
-                this.bot.logger.warn("Command handler failed to process command trigger: " + command);
-            } else {
-                this.bot.logger.error(String(e));
             }
         }
     }

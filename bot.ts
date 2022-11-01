@@ -1,4 +1,5 @@
-import { SchedulerBot, CommandHandler } from "./classes/core";
+import { SchedulerBot } from "./classes/core";
+import { CommandHandler } from "./classes/handler";
 
 const bot = new SchedulerBot(String(process.env.BOT_TOKEN));
 const handler = new CommandHandler(bot);
