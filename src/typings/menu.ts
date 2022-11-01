@@ -6,6 +6,7 @@ import { CustomContext } from "./bot";
 
 export const show_schedule = (day: string) => {
     const week = moment().tz("Europe/Kyiv").isoWeek() % 2;
+    const time = moment().tz("Europe/Kyiv").format("HH:mm");
     const days_i18n: { [day: string]: string } = {
         Monday: "Понеділок",
         Tuesday: "Вівторок",
@@ -14,8 +15,14 @@ export const show_schedule = (day: string) => {
         Friday: "П'ятниця",
     };
     let message = `🗓️ *Графік на* _${days_i18n[day]}_:\n`;
+    const ongoing = (timestart: string, timeend: string) => {
+        return time >= timestart && time <= timeend;
+    };
     if (day != "Saturday" && day != "Sunday") {
         schedule[day].forEach((item) => {
+            if (ongoing(item.start, item.end)) {
+                message += `✅ `;
+            }
             switch (item.name) {
                 case "📚 Англійська":
                     message += `⚬ _${item.start}_-_${item.end}_ — ${item.name} ([Чепурна](${item.link[0]}) | [Дунько](${item.link[1]}))\n`;

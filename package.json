@@ -2,9 +2,9 @@
   "name": "voxeltg",
   "version": "1.0.0",
   "description": "Telegram bot. Simple.",
-  "main": "./build/bot.js",
+  "main": "./build/loader.js",
   "scripts": {
-    "start": "node ./build/bot.js",
+    "start": "node ./build/loader.js",
     "build": "npx tsc",
     "lint": "npx eslint src --ext .ts",
     "lint:fix": "npx eslint src --ext .ts --fix",

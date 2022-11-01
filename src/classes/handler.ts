@@ -7,14 +7,6 @@ import { CommandHandlerError } from "./errors";
 export class CommandHandler<Context extends CustomContext = CustomContext> {
     constructor(private readonly bot: SchedulerBot<Context>) {}
 
-    public async schedule(ctx: Context) {
-        await ctx.reply(show_schedule(moment().format("dddd")), {
-            parse_mode: "Markdown",
-            reply_markup: schedule_days_menu,
-            disable_web_page_preview: true,
-        });
-    }
-
     public async start(ctx: Context) {
         await ctx.reply("Працюю на благо учнів ліцею 🤖\nАвтор: @voxelin", { parse_mode: "Markdown" });
     }
@@ -31,6 +23,8 @@ export class CommandHandler<Context extends CustomContext = CustomContext> {
     }
 
     public async link(ctx: Context) {
+        if (moment().format("dddd") == "Sunday" || moment().format("dddd") == "Saturday")
+            return await ctx.reply("Сьогодні вихідний, занять немає 🙂");
         const data = await this.bot.requestLink(ctx);
         const week = moment().isoWeek() % 2;
         const link = data![0];
@@ -60,6 +54,14 @@ export class CommandHandler<Context extends CustomContext = CustomContext> {
         } else {
             await ctx.reply("На жаль, на урок <code>" + name + "</code> посилання немає. 🤔");
         }
+    }
+
+    public async schedule(ctx: Context) {
+        await ctx.reply(show_schedule(moment().format("dddd")), {
+            parse_mode: "Markdown",
+            reply_markup: schedule_days_menu,
+            disable_web_page_preview: true,
+        });
     }
 
     public async handle(ctx: Context, command?: string) {
