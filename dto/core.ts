@@ -109,13 +109,13 @@ export class CommandHandler<Context extends CustomContext = CustomContext> {
         await ctx.reply(show_schedule(moment().format("dddd")), { parse_mode: "Markdown", reply_markup: schedule_days_menu, disable_web_page_preview: true });
     }
     public async start(ctx: Context) {
-        await ctx.reply("Працюю на благо учнів ліцею 🤖\n\nАвтор: @ieljit", { parse_mode: "Markdown" });
+        await ctx.reply("Працюю на благо учнів ліцею 🤖\n\nАвтор: @voxelin", { parse_mode: "Markdown" });
     }
     public async help(ctx: Context) {
-        await ctx.reply("Якщо у вас виникли проблеми з роботою бота, напишіть @ieljit");
+        await ctx.reply("Якщо у вас виникли проблеми з роботою бота, напишіть @voxelin");
     }
     public async about(ctx: Context) {
-        await ctx.reply("Цей бот був створений для зручного доступу до розкладу занять та посилань на заняття.\n\n" + "Розробник: @ieljit");
+        await ctx.reply("Цей бот був створений для зручного доступу до розкладу занять та посилань на заняття.\n\n" + "Розробник: @voxelin");
     }
     public async link(ctx: Context) {
         let data = await this.bot.sendlink();
