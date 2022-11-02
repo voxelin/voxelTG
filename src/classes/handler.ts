@@ -71,7 +71,8 @@ export class CommandHandler<Context extends CustomContext = CustomContext> {
         });
     }
 
-    public async timerHandler(gid: any) {
+    public async timerHandler(group: Context | number) {
+        const gid = <number>group;
         const data = this.handleLink();
         const [urls, name, sent] = [data[0], data[1], data[3]];
         if (!sent || !urls![1] || urls![0]) {

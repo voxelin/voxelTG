@@ -16,7 +16,7 @@ bot.on("message", (ctx) => {
 });
 
 setInterval(async () => {
-    await bot.contextHandler.timerHandler(String(process.env.GROUP_ID));
+    await bot.contextHandler.timerHandler(Number(process.env.GROUP_ID));
 }, 1000 * 60);
 
 bot.start();
