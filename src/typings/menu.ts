@@ -25,27 +25,27 @@ export const show_schedule = (day: string) => {
             }
             switch (item.name) {
                 case "📚 Англійська":
-                    message += `⚬ _${item.start}_-_${item.end}_ — ${item.name} ([Чепурна](${item.link[0]}) | [Дунько](${item.link[1]}))\n`;
+                    message += `⚬ _${item.start}_-_${item.end}_ — ${item.name} ([Чепурна](${item.urls[0]}) | [Дунько](${item.urls[1]}))\n`;
                     break;
                 case "💻 Інформатика":
-                    message += `⚬ _${item.start}_-_${item.end}_ — ${item.name} ([Беднар](${item.link[0]}) | [Шеремет](${item.link[1]}))\n`;
+                    message += `⚬ _${item.start}_-_${item.end}_ — ${item.name} ([Беднар](${item.urls[0]}) | [Шеремет](${item.urls[1]}))\n`;
                     break;
                 case "🎨 Мистецтво | 📜 Основи здоров'я":
                     if (week == 1) {
-                        message += `⚬ _${item.start}_-_${item.end}_ — [📜 Основи здоров'я](${item.link[1]})\n`;
+                        message += `⚬ _${item.start}_-_${item.end}_ — [📜 Основи здоров'я](${item.urls[1]})\n`;
                     } else {
-                        message += `⚬ _${item.start}_-_${item.end}_ — [🎨 Мистецтво](${item.link[0]})\n`;
+                        message += `⚬ _${item.start}_-_${item.end}_ — [🎨 Мистецтво](${item.urls[0]})\n`;
                     }
                     break;
                 case "🌍 Географія | 📜 Історія України":
                     if (week == 1) {
-                        message += `⚬ _${item.start}_-_${item.end}_ — [📜 Історія України](${item.link[1]})\n`;
+                        message += `⚬ _${item.start}_-_${item.end}_ — [📜 Історія України](${item.urls[1]})\n`;
                     } else {
-                        message += `⚬ _${item.start}_-_${item.end}_ — [🌍 Географія](${item.link[0]})\n`;
+                        message += `⚬ _${item.start}_-_${item.end}_ — [🌍 Географія](${item.urls[0]})\n`;
                     }
                     break;
                 default:
-                    message += `⚬ _${item.start}_-_${item.end}_ — [${item.name}](${item.link})\n`;
+                    message += `⚬ _${item.start}_-_${item.end}_ — [${item.name}](${item.urls})\n`;
             }
         });
     } else {

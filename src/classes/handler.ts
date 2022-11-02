@@ -1,9 +1,9 @@
 import moment from "moment-timezone";
+import { schedule } from "../data/schedule";
 import { CustomContext } from "../typings/bot";
 import { schedule_days_menu, show_schedule } from "../typings/menu";
 import { SchedulerBot } from "./core";
 import { CommandHandlerError } from "./errors";
-
 export class CommandHandler<Context extends CustomContext = CustomContext> {
     constructor(private readonly bot: SchedulerBot<Context>) {}
 
@@ -24,11 +24,12 @@ export class CommandHandler<Context extends CustomContext = CustomContext> {
 
     public async link(ctx: Context) {
         if (moment().format("dddd") == "Sunday" || moment().format("dddd") == "Saturday")
-            return await ctx.reply("Сьогодні вихідний, занять немає 🙂");
-        const data = await this.bot.requestLink(ctx);
+            return await ctx.reply("Сьогодні вихідний, занять немає! 🤗");
+        const data = this.handleLink(true);
+        if (Object.keys(data).length === 0) return ctx.reply("Уроки закінчились, відпочивайте! 🫂");
         const week = moment().isoWeek() % 2;
-        let link: string | string[] = data![0];
-        let name = data![1];
+        const [urls, next] = [data[0], data[2]];
+        let name = data[1];
         switch (name) {
             case "🎨 Мистецтво | 📜 Основи здоров'я":
                 if (week == 1) {
@@ -45,18 +46,18 @@ export class CommandHandler<Context extends CustomContext = CustomContext> {
                 }
                 break;
             case "📚 Англійська":
-                link = `1. <a href="${link[0]}">Чепурна</a>\n2. <a href="${link[1]}">Дунько</a>`;
+                urls![0] = `1. <a href="${urls![0]}">Чепурна</a>\n2. <a href="${urls![1]}">Дунько</a>`;
                 break;
             case "💻 Інформатика":
-                link = `1. <a href="${link[0]}">Беднар</a>\n2. <a href="${link[1]}">Шеремет</a>`;
+                urls![0] = `1. <a href="${urls![0]}">Беднар</a>\n2. <a href="${urls![1]}">Шеремет</a>`;
                 break;
             default:
                 break;
         }
-        if (link != "") {
-            data![3] == true
-                ? await ctx.reply(`Посилання на наступний урок: <b>${name}</b> \n${link}`)
-                : await ctx.reply(`Урок <b>${name}</b> вже почався: \n${link}`);
+        if (urls?.length != 0) {
+            next == true
+                ? await ctx.reply(`Посилання на наступний урок: <b>${name}</b> \n${urls![0]}`)
+                : await ctx.reply(`Урок <b>${name}</b> вже почався: \n${urls![0]}}`);
         } else {
             await ctx.reply("На жаль, на урок <code>" + name + "</code> посилання немає. 🤔");
         }
@@ -68,6 +69,123 @@ export class CommandHandler<Context extends CustomContext = CustomContext> {
             reply_markup: schedule_days_menu,
             disable_web_page_preview: true,
         });
+    }
+
+    public async timerHandler(gid: any) {
+        const data = this.handleLink();
+        const [urls, name, sent] = [data[0], data[1], data[3]];
+        if (!sent || !urls![1] || urls![0]) {
+            await this.bot.api.sendMessage(gid, `<b>Починається урок</b> <code>${name}</code> \n${urls}`, {
+                disable_web_page_preview: true,
+                parse_mode: "HTML",
+            });
+            await this.bot.logger?.info(`Sent link to | ${gid} |`);
+        } else if (!sent || urls![1] || urls![0]) {
+            const week = moment().isoWeek() % 2;
+            switch (name) {
+                case "📚 Англійська":
+                    await this.bot.api.sendMessage(
+                        gid,
+                        `<b>Починається урок</b> <code>${name}</code> \n1. <a href="${
+                            urls![0]
+                        }">Чепурна</a>\n2. <a href="${urls![1]}">Дунько</a>`,
+                        { disable_web_page_preview: true, parse_mode: "HTML" },
+                    );
+                    await this.bot.logger?.info(`Sent link to | ${gid} |`);
+                    break;
+                case "💻 Інформатика":
+                    await this.bot.api.sendMessage(
+                        gid,
+                        `<b>Починається урок</b> <code>${name}</code> \n1. <a href="${
+                            urls![0]
+                        }">Беднар</a>\n2. <a href="${urls![1]}">Шеремет</a>`,
+                        { disable_web_page_preview: true, parse_mode: "HTML" },
+                    );
+                    await this.bot.logger?.info(`Sent link to | ${gid} |`);
+                    break;
+                case "🎨 Мистецтво | 📜 Основи здоров'я":
+                    if (week == 1) {
+                        await this.bot.api.sendMessage(
+                            gid,
+                            `<b>Починається урок</b> <code>${name}</code> \n${urls![1]}`,
+                            {
+                                disable_web_page_preview: true,
+                                parse_mode: "HTML",
+                            },
+                        );
+                        await this.bot.logger?.info(`Sent link to | ${gid} |`);
+                    } else {
+                        await this.bot.api.sendMessage(
+                            gid,
+                            `<b>Починається урок</b> <code>${name}</code> \n${urls![0]}`,
+                            {
+                                disable_web_page_preview: true,
+                                parse_mode: "HTML",
+                            },
+                        );
+                        await this.bot.logger?.info(`Sent link to | ${gid} |`);
+                    }
+                    break;
+                case "🌍 Географія | 📜 Історія України":
+                    if (week == 1) {
+                        await this.bot.api.sendMessage(
+                            gid,
+                            `<b>Починається урок</b> <code>${name}</code> \n${urls![1]}`,
+                            {
+                                disable_web_page_preview: true,
+                                parse_mode: "HTML",
+                            },
+                        );
+                        await this.bot.logger?.info(`Sent link to | ${gid} |`);
+                    } else {
+                        await this.bot.api.sendMessage(
+                            gid,
+                            `<b>Починається урок</b> <code>${name}</code> \n${urls![0]}`,
+                            {
+                                disable_web_page_preview: true,
+                                parse_mode: "HTML",
+                            },
+                        );
+                        await this.bot.logger?.info(`Sent link to | ${gid} |`);
+                    }
+                    break;
+            }
+        }
+    }
+    private handleLink(handleRequest = false): { 0?: string[]; 1?: string; 2?: boolean; 3?: boolean } {
+        const day = moment().format("dddd");
+        const time = moment().format("HH:mm");
+        let _next = false;
+        let _name = "";
+        let _urls: string[] = [];
+        let _sent = false;
+        if (!["Sunday", "Saturday"].includes(day)) {
+            for (let i = 0; i < schedule[day].length; i++) {
+                if (time >= schedule[day][schedule[day].length - 1].end) {
+                    return {};
+                }
+                if (time >= schedule[day][i].start && time <= schedule[day][i].end && !schedule[day][i].sent) {
+                    _sent = schedule[day][i].sent ?? false;
+                    _urls = schedule[day][i].urls;
+                    _name = schedule[day][i].name;
+                    schedule[day][i].sent = true;
+                    break;
+                }
+                if (handleRequest) {
+                    if (time >= schedule[day][i].end && time <= schedule[day][i + 1].start) {
+                        _sent = schedule[day][i + 1].sent ?? false;
+                        _urls = schedule[day][i + 1].urls;
+                        _name = schedule[day][i + 1].name;
+                        _next = true;
+                        schedule[day][i + 1].sent = true;
+                        break;
+                    }
+                }
+            }
+        } else {
+            return {};
+        }
+        return { 0: _urls, 1: _name, 2: _next, 3: _sent };
     }
 
     public async handle(ctx: Context, command?: string) {
