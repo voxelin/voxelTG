@@ -114,7 +114,7 @@ export class SchedulerBot<C extends CustomContext> extends Bot<C> {
                 case "💻 Інформатика":
                     await this.api.sendMessage(
                         gid,
-                        `<b>Починається урок</b> <code>${name}</code> \n1. [Беднар](${link[0]})\n2. [Шеремет](${link[1]})`,
+                        `<b>Починається урок</b> <code>${name}</code> \n1. <a href="${link[0]}">Беднар</a>\n2. <a href="${link[1]}">Шеремет</a>`,
                         { disable_web_page_preview: true, parse_mode: "HTML" },
                     );
                     await this.logger?.info(`Sent link to | ${gid} |`);

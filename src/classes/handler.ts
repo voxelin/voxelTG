@@ -27,8 +27,11 @@ export class CommandHandler<Context extends CustomContext = CustomContext> {
             return await ctx.reply("Сьогодні вихідний, занять немає 🙂");
         const data = await this.bot.requestLink(ctx);
         const week = moment().isoWeek() % 2;
-        const link = data![0];
+        let link = data![0];
         let name = data![1];
+        if (Array.isArray(link)) {
+            link = `1. <a href="${link[0]}">LINK_A_CONNECT</a>\n2. <a href="${link[1]}">LINK_B_CONNECT</a>`;
+        }
         switch (name) {
             case "🎨 Мистецтво | 📜 Основи здоров'я":
                 if (week == 1) {
