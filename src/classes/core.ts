@@ -56,12 +56,12 @@ export class SchedulerBot<C extends CustomContext> extends Bot<C> {
         return [link, name, sent];
     }
 
-    public async requestLink(ctx: C): Promise<(string | boolean | string[])[] | undefined> {
+    public async requestLink(ctx: C): Promise<any[] | any> {
         const day = moment().format("dddd");
         const time = moment().format("HH:mm");
-        let link: string | string[] | boolean = false;
+        let link: string | string[] | undefined;
         let sent = false;
-        let name: string | boolean = false;
+        let name: string | undefined;
         let is_next = false;
         if (day != "Saturday" && day != "Sunday") {
             for (let i = 0; i < schedule[day].length; i++) {

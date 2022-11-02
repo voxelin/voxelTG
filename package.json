@@ -5,13 +5,13 @@
   "main": "./build/loader.js",
   "scripts": {
     "start": "node ./build/loader.js",
-    "build": "npx tsc",
-    "lint": "npx eslint src --ext .ts",
-    "lint:fix": "npx eslint src --ext .ts --fix",
-    "format": "npx prettier --write .",
+    "build": "tsc",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "format": "prettier --write .",
     "prepare": "husky install",
-    "test": "npx jest",
-    "test:cov": "npx jest --coverage"
+    "test": "jest",
+    "test:cov": "jest --coverage"
   },
   "repository": {
     "type": "git",
