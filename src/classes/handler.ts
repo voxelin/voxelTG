@@ -57,7 +57,7 @@ export class CommandHandler<Context extends CustomContext = CustomContext> {
         if (urls?.length != 0) {
             next == true
                 ? await ctx.reply(`Посилання на наступний урок: <b>${name}</b> \n${urls![0]}`)
-                : await ctx.reply(`Урок <b>${name}</b> вже почався: \n${urls![0]}}`);
+                : await ctx.reply(`Урок <b>${name}</b> вже почався: \n${urls![0]}`);
         } else {
             await ctx.reply("На жаль, на урок <code>" + name + "</code> посилання немає. 🤔");
         }
@@ -71,7 +71,7 @@ export class CommandHandler<Context extends CustomContext = CustomContext> {
         });
     }
 
-    public async timeHandler(group: Context | number) {
+    public async handleTime(group: Context | number) {
         const gid = <number>group;
         const data = this.handleLink();
         if (data[0]?.length == 0 && data[1] == "") return;
@@ -166,20 +166,28 @@ export class CommandHandler<Context extends CustomContext = CustomContext> {
                 if (time >= schedule[day][schedule[day].length - 1].end) {
                     return {};
                 }
-                if (time >= schedule[day][i].start && time <= schedule[day][i].end && !schedule[day][i].sent) {
-                    _sent = schedule[day][i].sent ?? false;
-                    _urls = schedule[day][i].urls;
-                    _name = schedule[day][i].name;
-                    schedule[day][i].sent = true;
-                    break;
-                }
                 if (handleRequest) {
+                    if (time >= schedule[day][i].start && time <= schedule[day][i].end) {
+                        _sent = schedule[day][i].sent ?? false;
+                        _urls = schedule[day][i].urls;
+                        _name = schedule[day][i].name;
+                        schedule[day][i].sent = true;
+                        break;
+                    }
                     if (time >= schedule[day][i].end && time <= schedule[day][i + 1].start) {
                         _sent = schedule[day][i + 1].sent ?? false;
                         _urls = schedule[day][i + 1].urls;
                         _name = schedule[day][i + 1].name;
                         _next = true;
                         schedule[day][i + 1].sent = true;
+                        break;
+                    }
+                } else {
+                    if (time >= schedule[day][i].start && time <= schedule[day][i].end && !schedule[day][i].sent) {
+                        _sent = schedule[day][i].sent ?? false;
+                        _urls = schedule[day][i].urls;
+                        _name = schedule[day][i].name;
+                        schedule[day][i].sent = true;
                         break;
                     }
                 }
