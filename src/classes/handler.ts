@@ -79,31 +79,25 @@ export class SystemHandler<C extends CustomContext> {
         const [urls, name, sent] = [data.urls, data.name, data.sent];
         const week = moment().isoWeek() % 2;
         if (urls?.length == 0) return;
-        if(urls?.length == 1) {
+        if (urls?.length == 1) {
             if (sent == false) {
-                await this.bot.api.sendMessage(
-                    gid,
-                    `<b>Починається урок</b> <code>${name}</code> \n${urls[0]}`,
-                    { parse_mode: "HTML" },
-                );
+                await this.bot.api.sendMessage(gid, `<b>Починається урок</b> <code>${name}</code> \n${urls[0]}`, {
+                    parse_mode: "HTML",
+                });
             }
         } else if (urls?.length == 2) {
             switch (name) {
                 case "📚 Англійська":
                     await this.bot.api.sendMessage(
                         gid,
-                        `<b>Починається урок</b> <code>${name}</code> \n1. <a href="${
-                            urls[0]
-                        }">Чепурна</a>\n2. <a href="${urls[1]}">Дунько</a>`,
+                        `<b>Починається урок</b> <code>${name}</code> \n1. <a href="${urls[0]}">Чепурна</a>\n2. <a href="${urls[1]}">Дунько</a>`,
                         { disable_web_page_preview: true, parse_mode: "HTML" },
                     );
                     break;
                 case "💻 Інформатика":
                     await this.bot.api.sendMessage(
                         gid,
-                        `<b>Починається урок</b> <code>${name}</code> \n1. <a href="${
-                            urls[0]
-                        }">Беднар</a>\n2. <a href="${urls[1]}">Шеремет</a>`,
+                        `<b>Починається урок</b> <code>${name}</code> \n1. <a href="${urls[0]}">Беднар</a>\n2. <a href="${urls[1]}">Шеремет</a>`,
                         { disable_web_page_preview: true, parse_mode: "HTML" },
                     );
                     break;
