@@ -7,6 +7,7 @@ import { CustomContext } from "./bot";
 export const show_schedule = (day: string) => {
     const week = moment().tz("Europe/Kyiv").isoWeek() % 2;
     const time = moment().tz("Europe/Kyiv").format("HH:mm");
+    const current_day = moment().tz("Europe/Kyiv").format("dddd");
     const days_i18n: { [day: string]: string } = {
         Monday: "Понеділок",
         Tuesday: "Вівторок",
@@ -20,7 +21,7 @@ export const show_schedule = (day: string) => {
     };
     if (day != "Saturday" && day != "Sunday") {
         schedule[day].forEach((item) => {
-            if (ongoing(item.start, item.end)) {
+            if (ongoing(item.start, item.end) && day == current_day) {
                 message += `● `;
             } else {
                 message += `○ `;
