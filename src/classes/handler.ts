@@ -71,9 +71,10 @@ export class CommandHandler<Context extends CustomContext = CustomContext> {
         });
     }
 
-    public async timerHandler(group: Context | number) {
+    public async timeHandler(group: Context | number) {
         const gid = <number>group;
         const data = this.handleLink();
+        if (data[0]?.length == 0 && data[1] == "") return;
         const [urls, name, sent] = [data[0], data[1], data[3]];
         if (!sent || !urls![1] || urls![0]) {
             await this.bot.api.sendMessage(gid, `<b>Починається урок</b> <code>${name}</code> \n${urls}`, {
