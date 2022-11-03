@@ -1,7 +1,6 @@
-FROM node:16.18.0-bullseye
+FROM node:16.18.0-alpine
 WORKDIR /app
 COPY . .
-RUN npm i -g pnpm
-RUN pnpm i
-RUN pnpm run build
-CMD ["pnpm", "start"]
+RUN npm ci
+RUN npm run build
+CMD ["npm", "start"]

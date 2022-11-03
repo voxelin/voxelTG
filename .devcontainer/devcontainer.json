@@ -1,9 +1,9 @@
 {
-	"name": "Node.js & TypeScript",
-	"image": "mcr.microsoft.com/devcontainers/typescript-node:18-bullseye",
-	"postCreateCommand": "npm install",
-	"remoteUser": "node",
-	"features": {
-		"ghcr.io/devcontainers/features/git:1": {}
-	}
+    "name": "Node.js & TypeScript",
+    "image": "mcr.microsoft.com/devcontainers/typescript-node:18-bullseye",
+    "postCreateCommand": "npm install",
+    "remoteUser": "root",
+    "features": {
+        "ghcr.io/devcontainers/features/git:1": {}
+    }
 }
