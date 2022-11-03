@@ -10,7 +10,7 @@
         "lint:fix": "eslint src --ext .ts --fix",
         "format": "prettier --write .",
         "prepare": "husky install",
-        "git:do": "git add . && git-cz"
+        "git:do": "git add . && git-cz && git push"
     },
     "repository": {
         "type": "git",
