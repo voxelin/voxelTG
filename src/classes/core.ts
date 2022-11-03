@@ -7,14 +7,16 @@ import { Bot, Context, session } from "grammy";
 import moment from "moment-timezone";
 import { CustomContext } from "../typings/bot";
 import { schedule_days_menu } from "../typings/menu";
-import { CommandHandler } from "./handler";
+import { CommandHandler, SystemHandler } from "./handler";
 
 export class SchedulerBot<C extends CustomContext> extends Bot<C> {
     public logger = new Logtail(String(process.env.LOGTAIL_TOKEN));
     public contextHandler: CommandHandler<C>;
+    public sysHandlers: SystemHandler<C>;
     constructor(token: string) {
         super(token || String(process.env.BOT_TOKEN));
-        this.contextHandler = new CommandHandler<C>(this);
+        this.sysHandlers = new SystemHandler<C>(this);
+        this.contextHandler = new CommandHandler<C>(this.sysHandlers);
     }
 
     public getSessionKey(ctx: Context) {

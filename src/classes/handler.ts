@@ -4,28 +4,24 @@ import { CustomContext } from "../typings/bot";
 import { schedule_days_menu, show_schedule } from "../typings/menu";
 import { SchedulerBot } from "./core";
 import { CommandHandlerError } from "./errors";
-export class CommandHandler<Context extends CustomContext = CustomContext> {
-    constructor(private readonly bot: SchedulerBot<Context>) {}
-
-    public async start(ctx: Context) {
+export class CommandHandler<C extends CustomContext = CustomContext> {
+    constructor(private readonly sysHandlers: SystemHandler<C>) {}
+    public async start(ctx: C) {
         await ctx.reply("Працюю на благо учнів ліцею 🤖\nАвтор: @voxelin", { parse_mode: "Markdown" });
     }
-
-    public async help(ctx: Context) {
+    public async help(ctx: C) {
         await ctx.reply("Якщо у вас виникли проблеми з роботою бота, повідомте @voxelin 🙂");
     }
-
-    public async about(ctx: Context) {
+    public async about(ctx: C) {
         await ctx.reply(
             "Цей бот був створений для зручного доступу до розкладу занять та посилань на заняття.\n" +
                 "Розробник: @voxelin",
         );
     }
-
-    public async link(ctx: Context) {
+    public async link(ctx: C) {
         if (moment().format("dddd") == "Sunday" || moment().format("dddd") == "Saturday")
             return await ctx.reply("Сьогодні вихідний, занять немає! 🤗");
-        const data = this.handleLink(true);
+        const data = this.sysHandlers.handleLink(true);
         if (Object.keys(data).length === 0) return ctx.reply("Уроки закінчились, відпочивайте! 🫂");
         const week = moment().isoWeek() % 2;
         const [urls, next] = [data[0], data[2]];
@@ -62,16 +58,22 @@ export class CommandHandler<Context extends CustomContext = CustomContext> {
             await ctx.reply("На жаль, на урок <code>" + name + "</code> посилання немає. 🤔");
         }
     }
-
-    public async schedule(ctx: Context) {
+    public async schedule(ctx: C) {
         await ctx.reply(show_schedule(moment().format("dddd")), {
             parse_mode: "Markdown",
             reply_markup: schedule_days_menu,
             disable_web_page_preview: true,
         });
     }
+}
 
-    public async handleTime(group: Context | number) {
+export class SystemHandler<C extends CustomContext> {
+    public commandHandler: CommandHandler<C>;
+    constructor(private readonly bot: SchedulerBot<C>) {
+        this.commandHandler = new CommandHandler<C>(this);
+    }
+    
+    public async handleTime(group: C | number) {
         const gid = <number>group;
         const data = this.handleLink();
         if (data[0]?.length == 0 && data[1] == "") return;
@@ -154,7 +156,7 @@ export class CommandHandler<Context extends CustomContext = CustomContext> {
             }
         }
     }
-    private handleLink(handleRequest = false): { 0?: string[]; 1?: string; 2?: boolean; 3?: boolean } {
+    public handleLink(handleRequest = false): { 0?: string[]; 1?: string; 2?: boolean; 3?: boolean } {
         const day = moment().format("dddd");
         const time = moment().format("HH:mm");
         let _next = false;
@@ -198,7 +200,7 @@ export class CommandHandler<Context extends CustomContext = CustomContext> {
         return { 0: _urls, 1: _name, 2: _next, 3: _sent };
     }
 
-    public async handle(ctx: Context, command?: string) {
+    public async handleCommand(ctx: C, command?: string) {
         if (!command)
             throw new CommandHandlerError(
                 "No command trigger provided. Please, provide a trigger without slash, e.g /start -> start",
@@ -209,7 +211,7 @@ export class CommandHandler<Context extends CustomContext = CustomContext> {
             );
         }
         try {
-            await this[command as keyof CommandHandler](ctx);
+            await this.commandHandler[command as keyof CommandHandler](ctx);
         } catch (e) {
             if (e instanceof TypeError) {
                 return;
