@@ -1,9 +1,5 @@
-export class CommandHandlerError implements Error {
-    name: string;
-    message: string;
-    stack?: string | undefined;
+export class CommandHandlerError extends Error {
     constructor(message: string) {
-        this.name = "CommandHandlerError";
-        this.message = message;
+        super(message);
     }
 }

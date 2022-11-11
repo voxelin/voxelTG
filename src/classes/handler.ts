@@ -207,9 +207,8 @@ export class SystemHandler<C extends CustomContext> {
                 return;
             } else if (e instanceof CommandHandlerError) {
                 await ctx.reply("Помилка обробки команди. Повідомте @voxelin 🙂");
-                this.bot.logger.warn("Command handler failed to process command trigger: " + command);
             } else {
-                this.bot.logger.error(String(e));
+                console.error(e);
             }
         }
     }

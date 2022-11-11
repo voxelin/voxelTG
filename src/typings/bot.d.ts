@@ -1,5 +1,5 @@
 import { HydrateFlavor } from "@grammyjs/hydrate";
-import { Context, SessionFlavor } from "grammy";
+import { Context } from "grammy";
 export interface zoom_url {
     German: string;
     Physics: string;
@@ -24,4 +24,4 @@ export interface schedule {
     [key: string]: Array<{ name: string; start: string; end: string; link: zoom_url[] | zoom_url }>;
 }
 
-export type CustomContext = Context & HydrateFlavor<Context> & SessionFlavor<{ last: number }>;
+export type CustomContext = Context & HydrateFlavor<Context>;
