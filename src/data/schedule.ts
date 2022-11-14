@@ -9,7 +9,7 @@ export const schedule: {
         { start: "11:15", end: "12:00", urls: [links.Chemistry], name: "🧪 Хімія (Код: 242295)" },
         { start: "12:10", end: "12:55", urls: [links.Algebra], name: "📐 Алгебра" },
         { start: "13:05", end: "13:50", urls: [links.Ukrainian], name: "📚 Українська мова" },
-        { start: "14:50", end: "15:35", urls: [], name: "🏃‍♂️ Фізична культура" },
+        { start: "13:55", end: "14:40", urls: [], name: "🏃‍♂️ Фізична культура" },
     ],
     Tuesday: [
         { start: "08:15", end: "09:00", urls: [links.FLit], name: "📚 Зарубіжна література" },
