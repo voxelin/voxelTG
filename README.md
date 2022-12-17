@@ -16,7 +16,7 @@ Authors:
     99% Jenny Poulson <911us@duck.com> 116
     1% Restyled.io</b> <commits@restyled.io> 1
 Repo: https://github.com/voxelin/voxelTG
-Commits: 118
+Commits: 120
 Lines of code: 456
 Size: 133.50 KiB (19 files)
 License: MIT
